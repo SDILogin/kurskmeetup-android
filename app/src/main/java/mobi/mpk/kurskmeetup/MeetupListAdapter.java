@@ -7,9 +7,12 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 
 import mobi.mpk.kurskmeetup.models.Meetup;
 
@@ -17,9 +20,14 @@ import mobi.mpk.kurskmeetup.models.Meetup;
  * Created by Александр on 09.04.2016.
  */
 public class MeetupListAdapter extends BaseAdapter {
+    private static final DateFormat dateFormat;
     private LayoutInflater inflater;
     private Context context;
     private List<Meetup> meetupList;
+
+    static {
+        dateFormat = new SimpleDateFormat("HH:mm dd.MM.yyyy", Locale.getDefault());
+    }
 
     public MeetupListAdapter(Context context) {
         this.context = context;
@@ -49,8 +57,10 @@ public class MeetupListAdapter extends BaseAdapter {
         }
         Meetup meetup = getItem(position);
         if (meetup != null) {
-            TextView textView = (TextView) convertView.findViewById(R.id.meetup_textview);
-            textView.setText(meetup.getPlace());
+            TextView titleView = (TextView) convertView.findViewById(R.id.meetup_title);
+            TextView subView = (TextView) convertView.findViewById(R.id.meetup_subtext);
+            titleView.setText(meetup.getPlace());
+            subView.setText(dateFormat.format(meetup.getDatetime()));
         }
         return convertView;
     }
