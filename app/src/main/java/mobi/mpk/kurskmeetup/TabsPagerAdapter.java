@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 public class TabsPagerAdapter extends FragmentPagerAdapter {
     private static final int TABS_COUNT = 2;
     private Fragment[] tabs;
+    private String[] titles = {"Meetups", "Peoples"};
 
     public TabsPagerAdapter(FragmentManager fm) {
         super(fm);
@@ -17,21 +18,28 @@ public class TabsPagerAdapter extends FragmentPagerAdapter {
     }
 
     @Override
+    public CharSequence getPageTitle(int position) {
+        if (position < 0 || position >= TABS_COUNT) {
+            throw new IndexOutOfBoundsException("No tab with index " + position);
+        }
+        return titles[position];
+    }
+
+    @Override
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
                 if (tabs[0] == null) {
-                    tabs[0] = new MeetupFragment();
+                    tabs[0] = MeetupFragment.newInstance();
                 }
                 break;
             case 1:
                 if (tabs[1] == null) {
-                    tabs[1] = new PeopleFragment();
+                    tabs[1] = PeopleFragment.newInstance();
                 }
                 break;
-        }
-        if (position < 0 || position >= TABS_COUNT) {
-            throw new IndexOutOfBoundsException("No tab with index " + position);
+            default:
+                throw new IndexOutOfBoundsException("No tab with index " + position);
         }
         return tabs[position];
     }
@@ -40,4 +48,5 @@ public class TabsPagerAdapter extends FragmentPagerAdapter {
     public int getCount() {
         return TABS_COUNT;
     }
+
 }

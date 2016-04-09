@@ -11,9 +11,15 @@ import android.view.ViewGroup;
  * Created by Александр on 08.04.2016.
  */
 public class PeopleFragment extends Fragment {
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_people, container, false);
     }
+
+    public static PeopleFragment newInstance() {
+        return new PeopleFragment();
+    }
+
 }
