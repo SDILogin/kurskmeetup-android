@@ -3,6 +3,7 @@ package mobi.mpk.kurskmeetup.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,16 +11,14 @@ import android.widget.ListView;
 
 import java.util.List;
 
+import mobi.mpk.kurskmeetup.R;
+import mobi.mpk.kurskmeetup.adapters.MeetupListAdapter;
+import mobi.mpk.kurskmeetup.models.Meetup;
 import mobi.mpk.kurskmeetup.utils.ApiBuilder;
 import mobi.mpk.kurskmeetup.utils.KurskMeetupApi;
-import mobi.mpk.kurskmeetup.adapters.MeetupListAdapter;
-import mobi.mpk.kurskmeetup.R;
-import mobi.mpk.kurskmeetup.models.Meetup;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.jackson.JacksonConverterFactory;
 
 public class MeetupFragment extends Fragment {
     private ListView meetupsList;
@@ -54,7 +53,7 @@ public class MeetupFragment extends Fragment {
 
         @Override
         public void onFailure(Call<List<Meetup>> call, Throwable t) {
-
+            Log.d("MeetupFragment", "Error occurred: " + t.getMessage());
         }
     }
 

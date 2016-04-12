@@ -1,26 +1,11 @@
 package mobi.mpk.kurskmeetup.models;
 
+import java.util.List;
+
 public class Topic {
-    private int id;
-    private int author;
     private String auname;
     private String title;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(int author) {
-        this.author = author;
-    }
+    private List<TopicContent> content;
 
     public String getAuname() {
         return auname;
@@ -37,4 +22,13 @@ public class Topic {
     public void setTitle(String title) {
         this.title = title;
     }
+
+    public List<TopicContent> getContent() {
+        return content;
+    }
+
+    public void setContent(List<TopicContent> content) {
+        this.content = content;
+    }
+
 }
