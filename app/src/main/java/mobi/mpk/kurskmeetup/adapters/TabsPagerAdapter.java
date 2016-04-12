@@ -1,12 +1,12 @@
-package mobi.mpk.kurskmeetup;
+package mobi.mpk.kurskmeetup.adapters;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-/**
- * Created by Александр on 08.04.2016.
- */
+import mobi.mpk.kurskmeetup.fragments.MeetupFragment;
+import mobi.mpk.kurskmeetup.fragments.PeopleFragment;
+
 public class TabsPagerAdapter extends FragmentPagerAdapter {
     private static final int TABS_COUNT = 2;
     private Fragment[] tabs;

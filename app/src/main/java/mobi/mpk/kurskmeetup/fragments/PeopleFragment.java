@@ -1,4 +1,4 @@
-package mobi.mpk.kurskmeetup;
+package mobi.mpk.kurskmeetup.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -7,9 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-/**
- * Created by Александр on 08.04.2016.
- */
+import mobi.mpk.kurskmeetup.R;
+
 public class PeopleFragment extends Fragment {
 
     @Nullable

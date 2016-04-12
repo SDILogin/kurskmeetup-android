@@ -1,8 +1,5 @@
 package mobi.mpk.kurskmeetup.models;
 
-/**
- * Created by Александр on 09.04.2016.
- */
 public class Topic {
     private int id;
     private int author;

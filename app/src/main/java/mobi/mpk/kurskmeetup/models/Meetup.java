@@ -3,9 +3,6 @@ package mobi.mpk.kurskmeetup.models;
 import java.util.Date;
 import java.util.List;
 
-/**
- * Created by Александр on 09.04.2016.
- */
 public class Meetup {
     private int id;
     private Date datetime;
