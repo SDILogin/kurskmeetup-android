@@ -1,4 +1,4 @@
-package mobi.mpk.kurskmeetup.models;
+package mobi.mpk.kurskmeetup.domain.dto;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package mobi.mpk.kurskmeetup.adapters;
+package mobi.mpk.kurskmeetup.presentation.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Locale;
 
 import mobi.mpk.kurskmeetup.R;
-import mobi.mpk.kurskmeetup.models.Meetup;
+import mobi.mpk.kurskmeetup.domain.dto.Meetup;
 
 public class MeetupListAdapter extends BaseAdapter {
     private static final DateFormat dateFormat;

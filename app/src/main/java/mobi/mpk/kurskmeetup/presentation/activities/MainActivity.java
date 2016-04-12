@@ -1,4 +1,4 @@
-package mobi.mpk.kurskmeetup.activities;
+package mobi.mpk.kurskmeetup.presentation.activities;
 
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -6,11 +6,9 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
 
 import mobi.mpk.kurskmeetup.R;
-import mobi.mpk.kurskmeetup.adapters.TabsPagerAdapter;
+import mobi.mpk.kurskmeetup.presentation.adapters.TabsPagerAdapter;
 
 public class MainActivity extends AppCompatActivity {
 

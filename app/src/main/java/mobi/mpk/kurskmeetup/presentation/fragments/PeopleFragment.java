@@ -1,4 +1,4 @@
-package mobi.mpk.kurskmeetup.fragments;
+package mobi.mpk.kurskmeetup.presentation.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

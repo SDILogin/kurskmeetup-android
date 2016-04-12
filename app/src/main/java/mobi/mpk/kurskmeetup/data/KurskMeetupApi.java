@@ -1,8 +1,8 @@
-package mobi.mpk.kurskmeetup.utils;
+package mobi.mpk.kurskmeetup.data;
 
 import java.util.List;
 
-import mobi.mpk.kurskmeetup.models.Meetup;
+import mobi.mpk.kurskmeetup.domain.dto.Meetup;
 import retrofit2.Call;
 import retrofit2.http.GET;
 
