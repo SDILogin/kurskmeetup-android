@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import mobi.mpk.kurskmeetup.R;
+import mobi.mpk.kurskmeetup.data.apiary.ApiaryMeetupsRepository;
 import mobi.mpk.kurskmeetup.domain.MeetupsRepository;
 import mobi.mpk.kurskmeetup.presentation.adapters.MeetupListAdapter;
 
@@ -25,6 +26,7 @@ public class MeetupsFragment extends Fragment {
         listAdapter = new MeetupListAdapter(getContext());
         meetupsList.setAdapter(listAdapter);
 
+        repository = new ApiaryMeetupsRepository();
         listAdapter.addAll(repository.getMeetups());
         return fragmentView;
     }

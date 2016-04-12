@@ -20,7 +20,7 @@ public class MeetupsService {
 
     public Fragment getFragment() {
         List<Meetup> meetups = repository.getMeetups();
-        if (meetups.size() < 1) {
+        if (meetups.size() < 1 && false) {
             return EmptyMeetupsFragment.newInstance();
         }
         return MeetupsFragment.newInstance();

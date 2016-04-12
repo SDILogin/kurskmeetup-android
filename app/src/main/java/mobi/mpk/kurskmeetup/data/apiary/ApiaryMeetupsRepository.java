@@ -16,6 +16,10 @@ import retrofit2.Response;
 public class ApiaryMeetupsRepository implements MeetupsRepository {
     private List<Meetup> meetups;
 
+    public ApiaryMeetupsRepository() {
+        meetups = new LinkedList<>();
+    }
+
     @Override
     public List<Meetup> getMeetups() {
         KurskMeetupApi api = ApiBuilder.getApi();
@@ -28,7 +32,6 @@ public class ApiaryMeetupsRepository implements MeetupsRepository {
     public Meetup getMeetup(int id) {
         return null;
     }
-
 
     private class ListMeetupsCallback implements Callback<List<Meetup>> {
 
