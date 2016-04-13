@@ -17,25 +17,26 @@ import mobi.mpk.kurskmeetup.domain.OnDataLoadListener;
 import mobi.mpk.kurskmeetup.domain.dto.Meetup;
 
 public class MeetupsTabFragment extends Fragment implements OnDataLoadListener<List<Meetup>> {
-    private static final String SUCCESS_FRAGMENT = "Meetups";
-    private static final String FAILURE_FRAGMENT = "Meetups";
     private List<Meetup> meetups;
-
-    private Fragment current;
+    private View fragment;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        fragment = inflater.inflate(R.layout.fragment_meetups_tab, container, false);
+        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+        transaction.replace(R.id.meetupstab_container, LoadingMeetupsFragment.newInstance());
+        transaction.commit();
         AsyncRepository repository = new ApiaryAsyncRepository();
         repository.getMeetups(this);
-        return inflater.inflate(R.layout.fragment_meetupstab, container, false);
+        return fragment;
     }
 
     @Override
     public void onSuccess(List<Meetup> data) {
         meetups = data;
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-        transaction.replace(R.id.meetupstab_container, MeetupsFragment.newInstance());
+        transaction.replace(R.id.meetupstab_container, MeetupsListFragment.newInstance());
         transaction.commit();
     }
 

@@ -11,14 +11,14 @@ import android.widget.ListView;
 import mobi.mpk.kurskmeetup.R;
 import mobi.mpk.kurskmeetup.presentation.adapters.MeetupListAdapter;
 
-public class MeetupsFragment extends Fragment {
+public class MeetupsListFragment extends Fragment {
     private ListView meetupsList;
     private MeetupListAdapter listAdapter;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View fragmentView = inflater.inflate(R.layout.fragment_meetup, container, false);
+        View fragmentView = inflater.inflate(R.layout.fragment_meetups_list, container, false);
         meetupsList = (ListView) fragmentView.findViewById(R.id.meetups_list);
         listAdapter = new MeetupListAdapter(getContext());
         meetupsList.setAdapter(listAdapter);
@@ -27,8 +27,8 @@ public class MeetupsFragment extends Fragment {
         return fragmentView;
     }
 
-    public static MeetupsFragment newInstance() {
-        return new MeetupsFragment();
+    public static MeetupsListFragment newInstance() {
+        return new MeetupsListFragment();
     }
 
 }
