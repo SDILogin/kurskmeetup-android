@@ -8,19 +8,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import java.util.List;
-
 import mobi.mpk.kurskmeetup.R;
-import mobi.mpk.kurskmeetup.data.apiary.ApiaryAsyncRepository;
-import mobi.mpk.kurskmeetup.domain.AsyncRepository;
-import mobi.mpk.kurskmeetup.domain.OnDataLoadListener;
-import mobi.mpk.kurskmeetup.domain.dto.Meetup;
 import mobi.mpk.kurskmeetup.presentation.adapters.MeetupListAdapter;
 
 public class MeetupsFragment extends Fragment {
     private ListView meetupsList;
     private MeetupListAdapter listAdapter;
-    private AsyncRepository repository;
 
     @Nullable
     @Override
@@ -30,26 +23,12 @@ public class MeetupsFragment extends Fragment {
         listAdapter = new MeetupListAdapter(getContext());
         meetupsList.setAdapter(listAdapter);
 
-        repository = new ApiaryAsyncRepository();
-        repository.getMeetups(new Callback());
+        listAdapter.addAll(((MeetupsTabFragment) getParentFragment()).getMeetups());
         return fragmentView;
     }
 
     public static MeetupsFragment newInstance() {
         return new MeetupsFragment();
-    }
-
-    private class Callback implements OnDataLoadListener<List<Meetup>> {
-
-        @Override
-        public void onSuccess(List<Meetup> data) {
-            listAdapter.addAll(data);
-        }
-
-        @Override
-        public void onFailure(Throwable throwable) {
-            // TODO switch to error fragment
-        }
     }
 
 }

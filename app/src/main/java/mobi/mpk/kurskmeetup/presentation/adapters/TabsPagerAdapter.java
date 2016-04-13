@@ -4,7 +4,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import mobi.mpk.kurskmeetup.application.MeetupsService;
 import mobi.mpk.kurskmeetup.presentation.fragments.MeetupsFragment;
 import mobi.mpk.kurskmeetup.presentation.fragments.MeetupsTabFragment;
 import mobi.mpk.kurskmeetup.presentation.fragments.PeopleFragment;
