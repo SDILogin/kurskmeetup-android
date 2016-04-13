@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 import mobi.mpk.kurskmeetup.application.MeetupsService;
 import mobi.mpk.kurskmeetup.presentation.fragments.MeetupsFragment;
+import mobi.mpk.kurskmeetup.presentation.fragments.MeetupsTabFragment;
 import mobi.mpk.kurskmeetup.presentation.fragments.PeopleFragment;
 
 public class TabsPagerAdapter extends FragmentPagerAdapter {
@@ -31,7 +32,7 @@ public class TabsPagerAdapter extends FragmentPagerAdapter {
         switch (position) {
             case 0:
                 if (tabs[0] == null) {
-                    tabs[0] = MeetupsService.getInstance().getFragment();
+                    tabs[0] = MeetupsTabFragment.newInstance();
                 }
                 break;
             case 1:
