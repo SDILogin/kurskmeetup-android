@@ -1,8 +1,5 @@
 package mobi.mpk.kurskmeetup.data.apiary;
 
-import android.util.Log;
-
-import java.util.LinkedList;
 import java.util.List;
 
 import mobi.mpk.kurskmeetup.data.ApiBuilder;

@@ -11,8 +11,7 @@ import android.view.ViewGroup;
 import java.util.List;
 
 import mobi.mpk.kurskmeetup.R;
-import mobi.mpk.kurskmeetup.data.apiary.ApiaryAsyncRepository;
-import mobi.mpk.kurskmeetup.domain.AsyncRepository;
+import mobi.mpk.kurskmeetup.application.MeetupsService;
 import mobi.mpk.kurskmeetup.domain.OnDataLoadListener;
 import mobi.mpk.kurskmeetup.domain.dto.Meetup;
 
@@ -27,8 +26,7 @@ public class MeetupsTabFragment extends Fragment implements OnDataLoadListener<L
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         transaction.replace(R.id.meetupstab_container, LoadingMeetupsFragment.newInstance());
         transaction.commit();
-        AsyncRepository repository = new ApiaryAsyncRepository();
-        repository.getMeetups(this);
+        MeetupsService.getInstance().getMeetups(this);
         return fragment;
     }
 
