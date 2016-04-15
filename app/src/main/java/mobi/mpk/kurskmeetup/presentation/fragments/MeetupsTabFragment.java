@@ -38,8 +38,13 @@ public class MeetupsTabFragment extends Fragment implements OnUpdateListener {
 
     @Override
     public void onSuccess() {
+        List<Meetup> meetups = MeetupsService.getInstance().getMeetups();
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-        transaction.replace(R.id.meetupstab_container, MeetupsListFragment.newInstance());
+        if (meetups != null && meetups.size() > 0) {
+            transaction.replace(R.id.meetupstab_container, MeetupsListFragment.newInstance());
+        } else {
+            transaction.replace(R.id.meetupstab_container, EmptyMeetupsFragment.newInstance());
+        }
         transaction.commit();
     }
 
