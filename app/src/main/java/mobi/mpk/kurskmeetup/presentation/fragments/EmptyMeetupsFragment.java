@@ -1,4 +1,4 @@
-package mobi.mpk.kurskmeetup;
+package mobi.mpk.kurskmeetup.presentation.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -7,19 +7,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-/**
- * Created by Александр on 08.04.2016.
- */
-public class PeopleFragment extends Fragment {
+import mobi.mpk.kurskmeetup.R;
+
+public class EmptyMeetupsFragment extends Fragment {
+
+    public static EmptyMeetupsFragment newInstance() {
+        return new EmptyMeetupsFragment();
+    }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_people, container, false);
+        View view = inflater.inflate(R.layout.fragment_empty_meetups, container, false);
+        return view;
     }
-
-    public static PeopleFragment newInstance() {
-        return new PeopleFragment();
-    }
-
 }

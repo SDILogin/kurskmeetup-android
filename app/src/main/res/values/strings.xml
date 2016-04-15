@@ -2,4 +2,6 @@
     <string name="app_name">Kursk Meetup</string>
     <string name="action_settings">Settings</string>
     <string name="section_format">Hello World from section: %1$d</string>
+    <string name="no_meetups">Нет митапов для отображения</string>
+    <string name="loading_meetups">Загрузка</string>
 </resources>
