@@ -4,16 +4,17 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.lang.reflect.Field;
+import java.net.UnknownHostException;
 import java.util.List;
 
 import mobi.mpk.kurskmeetup.R;
 import mobi.mpk.kurskmeetup.application.MeetupsService;
-import mobi.mpk.kurskmeetup.domain.OnDataLoadListener;
+import mobi.mpk.kurskmeetup.data.apiary.BadResponse;
 import mobi.mpk.kurskmeetup.domain.OnUpdateListener;
 import mobi.mpk.kurskmeetup.domain.dto.Meetup;
 
@@ -51,7 +52,16 @@ public class MeetupsTabFragment extends Fragment implements OnUpdateListener {
     @Override
     public void onFailure(Throwable throwable) {
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-        transaction.replace(R.id.meetupstab_container, EmptyMeetupsFragment.newInstance());
+        if (throwable instanceof BadResponse) {
+            transaction.replace(R.id.meetupstab_container,
+                    ErrorMeetupsFragment.newInstance(getString(R.string.error_bad_response)));
+        } else if (throwable instanceof UnknownHostException) {
+            transaction.replace(R.id.meetupstab_container,
+                    ErrorMeetupsFragment.newInstance(getString(R.string.error_connection)));
+        } else {
+            transaction.replace(R.id.meetupstab_container,
+                    ErrorMeetupsFragment.newInstance(getString(R.string.error_internal)));
+        }
         transaction.commit();
     }
 

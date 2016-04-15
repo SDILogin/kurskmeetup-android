@@ -23,7 +23,9 @@ public class ApiaryAsyncRepository implements AsyncRepository {
                 if (response.isSuccessful()) {
                     callback.onSuccess(response.body());
                 } else {
-                    callback.onFailure(new Exception("Bad response code"));
+                    callback.onFailure(new BadResponse("Response HTTP code: " +
+                                       response.code() +
+                                       response.message()));
                 }
             }
 

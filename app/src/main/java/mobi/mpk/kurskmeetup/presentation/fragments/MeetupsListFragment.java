@@ -12,7 +12,6 @@ import java.util.List;
 
 import mobi.mpk.kurskmeetup.R;
 import mobi.mpk.kurskmeetup.application.MeetupsService;
-import mobi.mpk.kurskmeetup.domain.OnDataLoadListener;
 import mobi.mpk.kurskmeetup.domain.dto.Meetup;
 import mobi.mpk.kurskmeetup.presentation.adapters.MeetupListAdapter;
 

@@ -4,4 +4,8 @@
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="no_meetups">Нет митапов для отображения</string>
     <string name="loading_meetups">Загрузка</string>
+    <string name="error_meetups">Ошибка:</string>
+    <string name="error_bad_response">Ошибка при получении данных</string>
+    <string name="error_connection">Ошибка при подключении к серверу</string>
+    <string name="error_internal">Внутренняя ошибка приложения</string>
 </resources>
