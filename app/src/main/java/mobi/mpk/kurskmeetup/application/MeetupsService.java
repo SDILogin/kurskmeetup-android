@@ -1,42 +1,35 @@
 package mobi.mpk.kurskmeetup.application;
 
-import android.support.v4.app.Fragment;
+import android.support.annotation.Nullable;
 
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 import mobi.mpk.kurskmeetup.data.apiary.ApiaryAsyncRepository;
 import mobi.mpk.kurskmeetup.domain.AsyncRepository;
 import mobi.mpk.kurskmeetup.domain.OnDataLoadListener;
+import mobi.mpk.kurskmeetup.domain.OnUpdateListener;
 import mobi.mpk.kurskmeetup.domain.dto.Meetup;
-import mobi.mpk.kurskmeetup.presentation.fragments.MeetupsListFragment;
 
 public class MeetupsService {
     private static MeetupsService instance;
     private AsyncRepository repository;
     private List<Meetup> meetups;
+    private boolean updating;
 
     private MeetupsService() {
         repository = new ApiaryAsyncRepository();
+        updating = false;
     }
 
-    public Fragment getFragment() {
-        /*List<Meetup> meetups = repository.getMeetups(null);
-        if (meetups.size() < 1 && false) {
-            return EmptyMeetupsFragment.newInstance();
-        }*/
-        return MeetupsListFragment.newInstance();
+    @Nullable
+    public List<Meetup> getMeetups() {
+        return meetups;
     }
 
-    public void getMeetups(OnDataLoadListener<List<Meetup>> callback) {
-        if (meetups == null) {
-            updateMeetups(callback);
-        } else {
-            callback.onSuccess(meetups);
-        }
-    }
-
-    public void updateMeetups(OnDataLoadListener<List<Meetup>> callback) {
-        repository.getMeetups(new BufferingCallback(callback));
+    public void updateMeetups(OnUpdateListener callback) {
+        repository.getMeetups(new UpdatingCallback(callback));
     }
 
     public static MeetupsService getInstance() {
@@ -46,21 +39,23 @@ public class MeetupsService {
         return instance;
     }
 
-    private class BufferingCallback implements OnDataLoadListener<List<Meetup>> {
-        private OnDataLoadListener<List<Meetup>> callback;
+    private class UpdatingCallback implements OnDataLoadListener<List<Meetup>> {
+        private OnUpdateListener callback;
 
-        public BufferingCallback(OnDataLoadListener<List<Meetup>> callback) {
+        public UpdatingCallback(OnUpdateListener callback) {
             this.callback = callback;
         }
 
         @Override
         public void onSuccess(List<Meetup> data) {
+            updating = false;
             meetups = data;
-            callback.onSuccess(data);
+            callback.onSuccess();
         }
 
         @Override
         public void onFailure(Throwable throwable) {
+            updating = false;
             callback.onFailure(throwable);
         }
     }

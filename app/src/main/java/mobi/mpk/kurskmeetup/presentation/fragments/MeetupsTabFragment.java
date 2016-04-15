@@ -8,15 +8,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.lang.reflect.Field;
 import java.util.List;
 
 import mobi.mpk.kurskmeetup.R;
 import mobi.mpk.kurskmeetup.application.MeetupsService;
 import mobi.mpk.kurskmeetup.domain.OnDataLoadListener;
+import mobi.mpk.kurskmeetup.domain.OnUpdateListener;
 import mobi.mpk.kurskmeetup.domain.dto.Meetup;
 
-public class MeetupsTabFragment extends Fragment implements OnDataLoadListener<List<Meetup>> {
-    private List<Meetup> meetups;
+public class MeetupsTabFragment extends Fragment implements OnUpdateListener {
     private View fragment;
 
     @Nullable
@@ -26,13 +27,17 @@ public class MeetupsTabFragment extends Fragment implements OnDataLoadListener<L
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         transaction.replace(R.id.meetupstab_container, LoadingMeetupsFragment.newInstance());
         transaction.commit();
-        MeetupsService.getInstance().getMeetups(this);
+        MeetupsService service = MeetupsService.getInstance();
+        if (service.getMeetups() == null) {
+            service.updateMeetups(this);
+        } else {
+            onSuccess();
+        }
         return fragment;
     }
 
     @Override
-    public void onSuccess(List<Meetup> data) {
-        meetups = data;
+    public void onSuccess() {
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         transaction.replace(R.id.meetupstab_container, MeetupsListFragment.newInstance());
         transaction.commit();
@@ -45,9 +50,21 @@ public class MeetupsTabFragment extends Fragment implements OnDataLoadListener<L
         transaction.commit();
     }
 
-    public List<Meetup> getMeetups() {
-        return meetups;
-    }
+    @Override
+    public void onDetach() {
+        super.onDetach();
+
+        try {
+            Field childFragmentManager = Fragment.class.getDeclaredField("mChildFragmentManager");
+            childFragmentManager.setAccessible(true);
+            childFragmentManager.set(this, null);
+
+        } catch (NoSuchFieldException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+    }//*/
 
     public static MeetupsTabFragment newInstance() {
         return new MeetupsTabFragment();
