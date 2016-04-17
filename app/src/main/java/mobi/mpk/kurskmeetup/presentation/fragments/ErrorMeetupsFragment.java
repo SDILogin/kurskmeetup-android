@@ -16,9 +16,10 @@ public class ErrorMeetupsFragment extends Fragment {
         return new ErrorMeetupsFragment();
     }
 
-    public static ErrorMeetupsFragment newInstance(String msg) {
+    public static ErrorMeetupsFragment newInstance(String title, String msg) {
         Bundle bundle = new Bundle();
-        bundle.putString("error", msg);
+        bundle.putString("title", title);
+        bundle.putString("msg", msg);
         ErrorMeetupsFragment fragment = new ErrorMeetupsFragment();
         fragment.setArguments(bundle);
         return fragment;
@@ -30,8 +31,10 @@ public class ErrorMeetupsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_error_meetups, container, false);
         Bundle args = getArguments();
         if (args != null) {
-            TextView textView = (TextView) view.findViewById(R.id.meetups_errortxt);
-            textView.setText(args.getString("error"));
+            TextView titleView = (TextView) view.findViewById(R.id.meetups_errortitle);
+            titleView.setText(args.getString("title"));
+            TextView msgView = (TextView) view.findViewById(R.id.meetups_errortxt);
+            msgView.setText(args.getString("msg"));
         }
         return view;
     }

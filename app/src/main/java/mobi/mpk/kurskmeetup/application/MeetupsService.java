@@ -1,62 +1,92 @@
 package mobi.mpk.kurskmeetup.application;
 
-import android.support.annotation.Nullable;
+import android.content.Context;
 
-import java.util.LinkedList;
+import java.net.UnknownHostException;
 import java.util.List;
-import java.util.Queue;
 
+import mobi.mpk.kurskmeetup.R;
 import mobi.mpk.kurskmeetup.data.apiary.ApiaryAsyncRepository;
+import mobi.mpk.kurskmeetup.data.apiary.BadResponse;
 import mobi.mpk.kurskmeetup.domain.AsyncRepository;
 import mobi.mpk.kurskmeetup.domain.OnDataLoadListener;
-import mobi.mpk.kurskmeetup.domain.OnUpdateListener;
 import mobi.mpk.kurskmeetup.domain.dto.Meetup;
+import mobi.mpk.kurskmeetup.presentation.ListFragment;
 
 public class MeetupsService {
     private static MeetupsService instance;
     private AsyncRepository repository;
+    private ListFragment<Meetup> view;
     private List<Meetup> meetups;
-    private boolean updating;
+    private Context context;
 
     private MeetupsService() {
         repository = new ApiaryAsyncRepository();
-        updating = false;
     }
 
-    @Nullable
-    public List<Meetup> getMeetups() {
-        return meetups;
+    public void loadMeetups() {
+        if (meetups == null) {
+            updateMeetups();
+        } else {
+            if (meetups.size() > 0) {
+                view.showList(meetups);
+            } else {
+                view.showEmpty();
+            }
+        }
     }
 
-    public void updateMeetups(OnUpdateListener callback) {
-        repository.getMeetups(new UpdatingCallback(callback));
+    public void updateMeetups() {
+        repository.getMeetups(new UpdatingCallback());
     }
 
-    public static MeetupsService getInstance() {
+    public static MeetupsService getInstance(ListFragment<Meetup> view, Context context) {
         if (instance == null) {
             instance = new MeetupsService();
         }
+        instance.setView(view);
+        instance.setContext(context);
         return instance;
     }
 
-    private class UpdatingCallback implements OnDataLoadListener<List<Meetup>> {
-        private OnUpdateListener callback;
+    private void setContext(Context context) {
+        this.context = context;
+    }
 
-        public UpdatingCallback(OnUpdateListener callback) {
-            this.callback = callback;
-        }
+    private void setView(ListFragment<Meetup> view) {
+        this.view = view;
+    }
+
+    private class UpdatingCallback implements OnDataLoadListener<List<Meetup>> {
 
         @Override
         public void onSuccess(List<Meetup> data) {
-            updating = false;
             meetups = data;
-            callback.onSuccess();
+            if (meetups != null && meetups.size() > 0) {
+                view.showList(data);
+            } else {
+                view.showEmpty();
+            }
         }
 
         @Override
         public void onFailure(Throwable throwable) {
-            updating = false;
-            callback.onFailure(throwable);
+            if (throwable instanceof BadResponse) {
+                view.showError(
+                    context.getString(R.string.error_title),
+                    context.getString(R.string.error_bad_response)
+                );
+            } else if (throwable instanceof UnknownHostException) {
+                view.showError(
+                    context.getString(R.string.error_title),
+                    context.getString(R.string.error_connection)
+                );
+            } else {
+                view.showError(
+                    context.getString(R.string.error_title),
+                    context.getString(R.string.error_internal)
+                );
+            }
         }
     }
 

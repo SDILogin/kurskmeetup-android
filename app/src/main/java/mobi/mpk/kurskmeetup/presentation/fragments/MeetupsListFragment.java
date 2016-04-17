@@ -11,7 +11,6 @@ import android.widget.ListView;
 import java.util.List;
 
 import mobi.mpk.kurskmeetup.R;
-import mobi.mpk.kurskmeetup.application.MeetupsService;
 import mobi.mpk.kurskmeetup.domain.dto.Meetup;
 import mobi.mpk.kurskmeetup.presentation.adapters.MeetupListAdapter;
 
@@ -27,7 +26,7 @@ public class MeetupsListFragment extends Fragment {
         listAdapter = new MeetupListAdapter(getContext());
         meetupsList.setAdapter(listAdapter);
 
-        List<Meetup> loadedData = MeetupsService.getInstance().getMeetups();
+        List<Meetup> loadedData = ((MeetupsTabFragment) getParentFragment()).getMeetups();
         if (loadedData != null) {
             listAdapter.addAll(loadedData);
         }
