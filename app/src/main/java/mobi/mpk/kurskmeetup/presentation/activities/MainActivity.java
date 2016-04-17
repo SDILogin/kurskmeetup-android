@@ -44,6 +44,8 @@ public class MainActivity extends AppCompatActivity {
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
+        tabLayout.getTabAt(0).setIcon(android.R.drawable.ic_menu_agenda).setText("");
+        tabLayout.getTabAt(1).setIcon(android.R.drawable.ic_menu_myplaces).setText("");
     }
 
 }
