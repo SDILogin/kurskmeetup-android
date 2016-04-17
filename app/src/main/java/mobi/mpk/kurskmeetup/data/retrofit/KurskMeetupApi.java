@@ -1,4 +1,4 @@
-package mobi.mpk.kurskmeetup.data;
+package mobi.mpk.kurskmeetup.data.retrofit;
 
 import java.util.List;
 

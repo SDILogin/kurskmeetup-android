@@ -1,4 +1,4 @@
-package mobi.mpk.kurskmeetup.domain;
+package mobi.mpk.kurskmeetup.data;
 
 public interface OnDataLoadListener<T> {
 

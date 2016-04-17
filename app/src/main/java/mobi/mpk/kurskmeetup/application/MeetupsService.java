@@ -6,10 +6,11 @@ import java.net.UnknownHostException;
 import java.util.List;
 
 import mobi.mpk.kurskmeetup.R;
-import mobi.mpk.kurskmeetup.data.apiary.ApiaryAsyncRepository;
-import mobi.mpk.kurskmeetup.data.apiary.BadResponse;
-import mobi.mpk.kurskmeetup.domain.AsyncRepository;
-import mobi.mpk.kurskmeetup.domain.OnDataLoadListener;
+import mobi.mpk.kurskmeetup.data.Urls;
+import mobi.mpk.kurskmeetup.data.retrofit.UrlRepository;
+import mobi.mpk.kurskmeetup.data.BadResponse;
+import mobi.mpk.kurskmeetup.data.AsyncRepository;
+import mobi.mpk.kurskmeetup.data.OnDataLoadListener;
 import mobi.mpk.kurskmeetup.domain.dto.Meetup;
 import mobi.mpk.kurskmeetup.presentation.ListFragment;
 
@@ -21,7 +22,7 @@ public class MeetupsService {
     private Context context;
 
     private MeetupsService() {
-        repository = new ApiaryAsyncRepository();
+        repository = new UrlRepository(Urls.APIARY);
     }
 
     public void loadMeetups() {

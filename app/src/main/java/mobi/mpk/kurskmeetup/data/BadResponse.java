@@ -1,4 +1,4 @@
-package mobi.mpk.kurskmeetup.data.apiary;
+package mobi.mpk.kurskmeetup.data;
 
 public class BadResponse extends Exception {
 

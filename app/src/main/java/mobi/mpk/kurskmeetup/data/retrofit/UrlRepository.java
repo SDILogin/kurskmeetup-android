@@ -1,21 +1,25 @@
-package mobi.mpk.kurskmeetup.data.apiary;
+package mobi.mpk.kurskmeetup.data.retrofit;
 
 import java.util.List;
 
-import mobi.mpk.kurskmeetup.data.ApiBuilder;
-import mobi.mpk.kurskmeetup.data.KurskMeetupApi;
-import mobi.mpk.kurskmeetup.domain.AsyncRepository;
-import mobi.mpk.kurskmeetup.domain.OnDataLoadListener;
+import mobi.mpk.kurskmeetup.data.AsyncRepository;
+import mobi.mpk.kurskmeetup.data.BadResponse;
+import mobi.mpk.kurskmeetup.data.OnDataLoadListener;
 import mobi.mpk.kurskmeetup.domain.dto.Meetup;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ApiaryAsyncRepository implements AsyncRepository {
+public class UrlRepository implements AsyncRepository {
+
+    private KurskMeetupApi api;
+
+    public UrlRepository(String url) {
+        api = new ApiBuilder(url).build();
+    }
 
     @Override
     public void getMeetups(final OnDataLoadListener<List<Meetup>> callback) {
-        KurskMeetupApi api = ApiBuilder.getApi();
         Call<List<Meetup>> call = api.listMeetups();
         call.enqueue(new Callback<List<Meetup>>() {
             @Override
