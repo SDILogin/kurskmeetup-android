@@ -24,6 +24,10 @@ public class ApiMeetupsService implements MeetupsService {
     public static ApiMeetupsService getInstance(AsyncRepository repository) {
         if (instance == null) {
             instance = new ApiMeetupsService(repository);
+        } else {
+            if (repository != instance.repository) {
+                instance.setRepository(repository);
+            }
         }
         return instance;
     }
@@ -49,6 +53,10 @@ public class ApiMeetupsService implements MeetupsService {
     @Override
     public void unregisterObserver(OnDataLoadListener<List<Meetup>> observer) {
         observers.remove(observer);
+    }
+
+    public void setRepository(AsyncRepository repository) {
+        this.repository = repository;
     }
 
     private class UpdatingCallback implements OnDataLoadListener<List<Meetup>> {
