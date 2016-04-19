@@ -80,4 +80,8 @@ public class MeetupListAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
+    public void clear() {
+        meetupList.clear();
+    }
+
 }

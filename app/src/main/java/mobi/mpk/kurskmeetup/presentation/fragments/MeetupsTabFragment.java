@@ -22,6 +22,7 @@ import mobi.mpk.kurskmeetup.domain.dto.Meetup;
 public class MeetupsTabFragment extends Fragment implements OnDataLoadListener<List<Meetup>>, MeetupsListFragment.UpdateListener {
     private MeetupsService service;
     private List<Meetup> meetups;
+    private MeetupsListFragment listFragment;
 
     @Nullable
     @Override
@@ -45,7 +46,10 @@ public class MeetupsTabFragment extends Fragment implements OnDataLoadListener<L
     }
 
     public void showList() {
-        showFragment(MeetupsListFragment.newInstance());
+        if (listFragment == null) {
+            listFragment = MeetupsListFragment.newInstance();
+        }
+        showFragment(listFragment);
     }
 
     public void showEmpty() {
