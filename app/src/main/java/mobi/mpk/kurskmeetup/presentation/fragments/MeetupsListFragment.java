@@ -3,6 +3,7 @@ package mobi.mpk.kurskmeetup.presentation.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +27,14 @@ public class MeetupsListFragment extends Fragment {
         listAdapter = new MeetupListAdapter(getContext());
         meetupsList.setAdapter(listAdapter);
 
+        SwipeRefreshLayout refreshLayout = (SwipeRefreshLayout) fragmentView.findViewById(R.id.refresh_meetups);
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                ((UpdateListener) getParentFragment()).update();
+            }
+        });
+
         List<Meetup> loadedData = ((MeetupsTabFragment) getParentFragment()).getMeetups();
         if (loadedData != null) {
             listAdapter.addAll(loadedData);
@@ -35,6 +44,10 @@ public class MeetupsListFragment extends Fragment {
 
     public static MeetupsListFragment newInstance() {
         return new MeetupsListFragment();
+    }
+
+    public interface UpdateListener {
+        void update();
     }
 
 }

@@ -19,7 +19,7 @@ import mobi.mpk.kurskmeetup.data.OnDataLoadListener;
 import mobi.mpk.kurskmeetup.domain.MeetupsService;
 import mobi.mpk.kurskmeetup.domain.dto.Meetup;
 
-public class MeetupsTabFragment extends Fragment implements OnDataLoadListener<List<Meetup>> {
+public class MeetupsTabFragment extends Fragment implements OnDataLoadListener<List<Meetup>>, MeetupsListFragment.UpdateListener {
     private MeetupsService service;
     private List<Meetup> meetups;
 
@@ -96,5 +96,10 @@ public class MeetupsTabFragment extends Fragment implements OnDataLoadListener<L
                     context.getString(R.string.error_internal)
             );
         }
+    }
+
+    @Override
+    public void update() {
+        service.getMeetups();
     }
 }
