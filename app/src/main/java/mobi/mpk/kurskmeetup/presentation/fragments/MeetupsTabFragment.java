@@ -21,13 +21,14 @@ import mobi.mpk.kurskmeetup.domain.dto.Meetup;
 
 public class MeetupsTabFragment extends Fragment implements OnDataLoadListener<List<Meetup>>, MeetupsListFragment.UpdateListener {
     private MeetupsService service;
-    private List<Meetup> meetups;
     private MeetupsListFragment listFragment;
+    private Fragment current;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View fragment = inflater.inflate(R.layout.fragment_meetups_tab, container, false);
+        listFragment = MeetupsListFragment.newInstance();
         service = ApiMeetupsService.getInstance();
         service.registerObserver(this);
         showLoading();
@@ -42,13 +43,10 @@ public class MeetupsTabFragment extends Fragment implements OnDataLoadListener<L
     }
 
     public void showLoading() {
-        showFragment(MessageFragment.newInstance(getString(R.string.loading_meetups)));
+        showList();
     }
 
     public void showList() {
-        if (listFragment == null) {
-            listFragment = MeetupsListFragment.newInstance();
-        }
         showFragment(listFragment);
     }
 
@@ -63,12 +61,14 @@ public class MeetupsTabFragment extends Fragment implements OnDataLoadListener<L
 
     private void showFragment(Fragment fragment) {
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-        transaction.replace(R.id.meetupstab_container, fragment);
+        if (current != null) {
+            transaction.remove(current);
+            current = fragment;
+            transaction.add(current, "MeetupsFragment");
+        } else {
+            transaction.replace(R.id.meetupstab_container, fragment);
+        }
         transaction.commit();
-    }
-
-    public List<Meetup> getMeetups() {
-        return meetups;
     }
 
     public static MeetupsTabFragment newInstance() {
@@ -77,7 +77,6 @@ public class MeetupsTabFragment extends Fragment implements OnDataLoadListener<L
 
     @Override
     public void onSuccess(List<Meetup> data) {
-        meetups = data;
         showList();
     }
 

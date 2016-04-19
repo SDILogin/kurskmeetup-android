@@ -43,13 +43,7 @@ public class MeetupsListFragment extends Fragment implements OnDataLoadListener<
                 android.R.color.holo_orange_light,
                 android.R.color.holo_blue_light
         );
-        refreshLayout.setRefreshing(true);
         setLoading(true);
-
-        List<Meetup> loadedData = ((MeetupsTabFragment) getParentFragment()).getMeetups();
-        if (loadedData != null) {
-            listAdapter.addAll(loadedData);
-        }
         return fragmentView;
     }
 
@@ -60,7 +54,15 @@ public class MeetupsListFragment extends Fragment implements OnDataLoadListener<
     }
 
     public void setLoading(boolean loading) {
-        refreshLayout.setRefreshing(loading);
+        if (loading) {
+            refreshLayout.post(new Runnable() {
+                @Override public void run() {
+                    refreshLayout.setRefreshing(true);
+                }
+            });
+        } else {
+            refreshLayout.setRefreshing(false);
+        }
     }
 
     public static MeetupsListFragment newInstance() {
@@ -69,14 +71,14 @@ public class MeetupsListFragment extends Fragment implements OnDataLoadListener<
 
     @Override
     public void onSuccess(List<Meetup> data) {
-        refreshLayout.setRefreshing(false);
+        setLoading(false);
         listAdapter.clear();
         listAdapter.addAll(data);
     }
 
     @Override
     public void onFailure(Throwable throwable) {
-
+        setLoading(false);
     }
 
     public interface UpdateListener {
