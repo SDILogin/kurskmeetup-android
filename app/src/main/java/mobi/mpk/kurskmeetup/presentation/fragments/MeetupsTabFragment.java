@@ -41,7 +41,7 @@ public class MeetupsTabFragment extends Fragment implements OnDataLoadListener<L
     }
 
     public void showLoading() {
-        showFragment(LoadingMeetupsFragment.newInstance());
+        showFragment(MessageFragment.newInstance(getString(R.string.loading_meetups)));
     }
 
     public void showList() {
@@ -49,11 +49,11 @@ public class MeetupsTabFragment extends Fragment implements OnDataLoadListener<L
     }
 
     public void showEmpty() {
-        showFragment(EmptyMeetupsFragment.newInstance());
+        showFragment(MessageFragment.newInstance(getString(R.string.no_meetups)));
     }
 
     public void showError(String title, String msg) {
-        Fragment errorFragment = ErrorMeetupsFragment.newInstance(title, msg);
+        Fragment errorFragment = MessageFragment.newInstance(title, msg);
         showFragment(errorFragment);
     }
 

@@ -10,17 +10,21 @@ import android.widget.TextView;
 
 import mobi.mpk.kurskmeetup.R;
 
-public class ErrorMeetupsFragment extends Fragment {
+public class MessageFragment extends Fragment {
 
-    public static ErrorMeetupsFragment newInstance() {
-        return new ErrorMeetupsFragment();
+    public static MessageFragment newInstance() {
+        return new MessageFragment();
     }
 
-    public static ErrorMeetupsFragment newInstance(String title, String msg) {
+    public static MessageFragment newInstance(String title) {
+        return newInstance(title, "");
+    }
+
+    public static MessageFragment newInstance(String title, String msg) {
         Bundle bundle = new Bundle();
         bundle.putString("title", title);
         bundle.putString("msg", msg);
-        ErrorMeetupsFragment fragment = new ErrorMeetupsFragment();
+        MessageFragment fragment = new MessageFragment();
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -28,7 +32,7 @@ public class ErrorMeetupsFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_error_meetups, container, false);
+        View view = inflater.inflate(R.layout.fragment_message, container, false);
         Bundle args = getArguments();
         if (args != null) {
             TextView titleView = (TextView) view.findViewById(R.id.meetups_errortitle);
