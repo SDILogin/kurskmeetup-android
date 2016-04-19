@@ -16,6 +16,7 @@ import java.util.Locale;
 
 import mobi.mpk.kurskmeetup.R;
 import mobi.mpk.kurskmeetup.domain.dto.Meetup;
+import mobi.mpk.kurskmeetup.domain.dto.Topic;
 
 public class MeetupListAdapter extends BaseAdapter {
     private static final DateFormat dateFormat;
@@ -24,7 +25,7 @@ public class MeetupListAdapter extends BaseAdapter {
     private List<Meetup> meetupList;
 
     static {
-        dateFormat = new SimpleDateFormat("HH:mm dd.MM.yyyy", Locale.getDefault());
+        dateFormat = new SimpleDateFormat("HH:mm dd MMMM yyyy", Locale.getDefault());
     }
 
     public MeetupListAdapter(Context context) {
@@ -57,8 +58,14 @@ public class MeetupListAdapter extends BaseAdapter {
         if (meetup != null) {
             TextView titleView = (TextView) convertView.findViewById(R.id.meetup_title);
             TextView subView = (TextView) convertView.findViewById(R.id.meetup_subtext);
+            TextView dateView = (TextView) convertView.findViewById(R.id.meetup_date);
             titleView.setText(meetup.getPlace());
-            subView.setText(dateFormat.format(meetup.getDatetime()));
+            StringBuilder str = new StringBuilder();
+            for (Topic topic : meetup.getTopics()) {
+                str.append(topic.getTitle() + "\n");
+            }
+            subView.setText(str.substring(0, str.length() - 1));
+            dateView.setText(dateFormat.format(meetup.getDatetime()));
         }
         return convertView;
     }
