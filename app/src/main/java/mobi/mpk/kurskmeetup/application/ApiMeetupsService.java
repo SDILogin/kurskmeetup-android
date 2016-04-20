@@ -11,32 +11,13 @@ import mobi.mpk.kurskmeetup.domain.MeetupsService;
 import mobi.mpk.kurskmeetup.domain.dto.Meetup;
 
 public class ApiMeetupsService implements MeetupsService {
-    private static ApiMeetupsService instance;
     private AsyncRepository repository;
     private List<Meetup> meetups;
     private List<OnDataLoadListener<List<Meetup>>> observers;
 
-    private ApiMeetupsService(AsyncRepository repository) {
+    public ApiMeetupsService(AsyncRepository repository) {
         this.repository = repository;
         observers = new LinkedList<>();
-    }
-
-    public static ApiMeetupsService getInstance(AsyncRepository repository) {
-        if (instance == null) {
-            instance = new ApiMeetupsService(repository);
-        } else {
-            if (repository != instance.repository) {
-                instance.setRepository(repository);
-            }
-        }
-        return instance;
-    }
-
-    public static ApiMeetupsService getInstance() {
-        if (instance == null) {
-            instance = new ApiMeetupsService(new UrlRepository(Urls.APIARY));
-        }
-        return instance;
     }
 
     @Override

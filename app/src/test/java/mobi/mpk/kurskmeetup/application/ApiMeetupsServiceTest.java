@@ -24,7 +24,7 @@ public class ApiMeetupsServiceTest {
     @Before
     public void init() {
         repository = mock(AsyncRepository.class);
-        service = ApiMeetupsService.getInstance(repository);
+        service = new MeetupServiceFactory().create(repository);
     }
 
     @Test

@@ -14,6 +14,7 @@ import java.util.List;
 
 import mobi.mpk.kurskmeetup.R;
 import mobi.mpk.kurskmeetup.application.ApiMeetupsService;
+import mobi.mpk.kurskmeetup.application.MeetupServiceFactory;
 import mobi.mpk.kurskmeetup.data.BadResponse;
 import mobi.mpk.kurskmeetup.data.OnDataLoadListener;
 import mobi.mpk.kurskmeetup.domain.MeetupsService;
@@ -27,7 +28,7 @@ public class MeetupsTabFragment extends Fragment implements OnDataLoadListener<L
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View fragment = inflater.inflate(R.layout.fragment_meetups_tab, container, false);
-        service = ApiMeetupsService.getInstance();
+        service = new MeetupServiceFactory().create();
         service.registerObserver(this);
         showLoading();
         service.getMeetups();
