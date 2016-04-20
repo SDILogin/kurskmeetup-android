@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,13 +23,14 @@ import mobi.mpk.kurskmeetup.domain.dto.Meetup;
 public class MeetupsTabFragment extends Fragment implements OnDataLoadListener<List<Meetup>>, MeetupsListFragment.UpdateListener {
     private MeetupsService service;
     private MeetupsListFragment listFragment;
-    private Fragment current;
+    private MessageFragment messageFragment;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View fragment = inflater.inflate(R.layout.fragment_meetups_tab, container, false);
         listFragment = MeetupsListFragment.newInstance();
+        messageFragment = MessageFragment.newInstance();
         service = ApiMeetupsService.getInstance();
         service.registerObserver(this);
         showLoading();
@@ -51,23 +53,19 @@ public class MeetupsTabFragment extends Fragment implements OnDataLoadListener<L
     }
 
     public void showEmpty() {
-        showFragment(MessageFragment.newInstance(getString(R.string.no_meetups)));
+        messageFragment.setMsg(getString(R.string.no_meetups), "");
+        showFragment(messageFragment);
     }
 
     public void showError(String title, String msg) {
-        Fragment errorFragment = MessageFragment.newInstance(title, msg);
-        showFragment(errorFragment);
+        messageFragment.setMsg(title, msg);
+        showFragment(messageFragment);
     }
 
     private void showFragment(Fragment fragment) {
-        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-        if (current != null) {
-            transaction.remove(current);
-            current = fragment;
-            transaction.add(current, "MeetupsFragment");
-        } else {
-            transaction.replace(R.id.meetupstab_container, fragment);
-        }
+        FragmentManager fragmentManager = getChildFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.meetupstab_container, fragment);
         transaction.commit();
     }
 
