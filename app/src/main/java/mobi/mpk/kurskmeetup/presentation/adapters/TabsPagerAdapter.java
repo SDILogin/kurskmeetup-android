@@ -4,7 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import mobi.mpk.kurskmeetup.presentation.fragments.MeetupsTabFragment;
+import mobi.mpk.kurskmeetup.presentation.fragments.MeetupsListFragment;
 import mobi.mpk.kurskmeetup.presentation.fragments.PeopleFragment;
 
 public class TabsPagerAdapter extends FragmentPagerAdapter {
@@ -30,7 +30,7 @@ public class TabsPagerAdapter extends FragmentPagerAdapter {
         switch (position) {
             case 0:
                 if (tabs[0] == null) {
-                    tabs[0] = MeetupsTabFragment.newInstance();
+                    tabs[0] = MeetupsListFragment.newInstance();
                 }
                 break;
             case 1:

@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,11 +19,13 @@ import mobi.mpk.kurskmeetup.R;
 import mobi.mpk.kurskmeetup.application.ApiMeetupsService;
 import mobi.mpk.kurskmeetup.data.BadResponse;
 import mobi.mpk.kurskmeetup.data.OnDataLoadListener;
+import mobi.mpk.kurskmeetup.domain.MeetupsService;
 import mobi.mpk.kurskmeetup.domain.dto.Meetup;
 import mobi.mpk.kurskmeetup.presentation.adapters.MeetupListAdapter;
 
 public class MeetupsListFragment extends Fragment implements OnDataLoadListener<List<Meetup>> {
     private MeetupListAdapter listAdapter;
+    private MeetupsService service;
 
     private ListView meetupsList;
     private SwipeRefreshLayout refreshLayout;
@@ -51,13 +54,16 @@ public class MeetupsListFragment extends Fragment implements OnDataLoadListener<
                 android.R.color.holo_orange_light,
                 android.R.color.holo_blue_light
         );
+
+        service = ApiMeetupsService.getInstance();
+        service.registerObserver(this);
         setLoading(true);
         return fragmentView;
     }
 
     @Override
     public void onDetach() {
-        ApiMeetupsService.getInstance().unregisterObserver(this);
+        service.unregisterObserver(this);
         super.onDetach();
     }
 
@@ -75,7 +81,8 @@ public class MeetupsListFragment extends Fragment implements OnDataLoadListener<
 
     public void showMsg(String msg) {
         msgText.setText(msg);
-        meetupsList.setVisibility(View.GONE);
+        Log.d(this.getClass().getSimpleName(), "" + refreshLayout.isRefreshing());
+        meetupsList.setVisibility(View.INVISIBLE);
         msgText.setVisibility(View.VISIBLE);
     }
 
@@ -88,7 +95,7 @@ public class MeetupsListFragment extends Fragment implements OnDataLoadListener<
     }
 
     public void showList() {
-        msgText.setVisibility(View.GONE);
+        msgText.setVisibility(View.INVISIBLE);
         meetupsList.setVisibility(View.VISIBLE);
     }
 
