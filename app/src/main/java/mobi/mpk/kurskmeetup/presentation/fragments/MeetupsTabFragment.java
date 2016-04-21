@@ -28,7 +28,7 @@ public class MeetupsTabFragment extends Fragment implements OnDataLoadListener<L
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View fragment = inflater.inflate(R.layout.fragment_meetups_tab, container, false);
-        service = new MeetupServiceFactory().create();
+        service = MeetupServiceFactory.getInstance().create();
         service.registerObserver(this);
         showLoading();
         service.getMeetups();

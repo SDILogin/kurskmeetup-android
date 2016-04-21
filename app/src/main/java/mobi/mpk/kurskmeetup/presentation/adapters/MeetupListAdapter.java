@@ -27,7 +27,7 @@ public class MeetupListAdapter extends BaseAdapter {
         this.context = context;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         meetupList = new LinkedList<>();
-        presenter = new MeetupsPresenterFactory().create();
+        presenter = MeetupsPresenterFactory.getInstance().create();
     }
 
     @Override
