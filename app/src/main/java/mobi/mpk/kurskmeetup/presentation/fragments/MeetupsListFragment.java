@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,22 +22,25 @@ import mobi.mpk.kurskmeetup.data.OnDataLoadListener;
 import mobi.mpk.kurskmeetup.domain.MeetupsService;
 import mobi.mpk.kurskmeetup.domain.dto.Meetup;
 import mobi.mpk.kurskmeetup.presentation.adapters.MeetupListAdapter;
+import mobi.mpk.kurskmeetup.presentation.views.EmptyViewSwipeRefreshLayout;
 
 public class MeetupsListFragment extends Fragment implements OnDataLoadListener<List<Meetup>> {
     private MeetupListAdapter listAdapter;
     private MeetupsService service;
 
     private ListView meetupsList;
-    private SwipeRefreshLayout refreshLayout;
+    private EmptyViewSwipeRefreshLayout refreshLayout;
     private TextView msgText;
+    private ScrollView scrollView;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View fragmentView = inflater.inflate(R.layout.fragment_meetups_list, container, false);
         meetupsList = (ListView) fragmentView.findViewById(R.id.meetups_list);
-        refreshLayout = (SwipeRefreshLayout) fragmentView.findViewById(R.id.refresh_meetups);
+        refreshLayout = (EmptyViewSwipeRefreshLayout) fragmentView.findViewById(R.id.refresh_meetups);
         msgText = (TextView) fragmentView.findViewById(R.id.meetups_msgtxt);
+        scrollView = (ScrollView) fragmentView.findViewById(R.id.meetups_scrollwrap);
 
         listAdapter = new MeetupListAdapter(getContext());
         meetupsList.setAdapter(listAdapter);
@@ -45,7 +49,7 @@ public class MeetupsListFragment extends Fragment implements OnDataLoadListener<
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                service.getMeetups();
+                updateMeetups();
             }
         });
         refreshLayout.setColorSchemeResources(
@@ -54,10 +58,11 @@ public class MeetupsListFragment extends Fragment implements OnDataLoadListener<
                 android.R.color.holo_blue_light
         );
 
+        meetupsList.setEmptyView(scrollView);
         service = ApiMeetupsService.getInstance();
         service.registerObserver(this);
         setLoading(true);
-        service.getMeetups();
+        updateMeetups();
         return fragmentView;
     }
 
@@ -84,23 +89,20 @@ public class MeetupsListFragment extends Fragment implements OnDataLoadListener<
         }
     }
 
-    public void showMsg(String msg) {
+    public void setEmptyMessage(String msg) {
         msgText.setText(msg);
-        meetupsList.setVisibility(View.INVISIBLE);
-        msgText.setVisibility(View.VISIBLE);
     }
 
     public void showError(Throwable throwable) {
         if (listAdapter.size() > 0) {
             Toast.makeText(getContext(), getErrorText(throwable), Toast.LENGTH_SHORT).show();
         } else {
-            showMsg(getErrorText(throwable));
+            setEmptyMessage(getErrorText(throwable));
         }
     }
 
-    public void showList() {
-        msgText.setVisibility(View.INVISIBLE);
-        meetupsList.setVisibility(View.VISIBLE);
+    public void updateMeetups() {
+        service.getMeetups();
     }
 
     public static MeetupsListFragment newInstance() {
@@ -111,11 +113,10 @@ public class MeetupsListFragment extends Fragment implements OnDataLoadListener<
     public void onSuccess(List<Meetup> data) {
         setLoading(false);
         if (data.size() > 0) {
-            showList();
             listAdapter.clear();
             listAdapter.addAll(data);
         } else {
-            showMsg(getString(R.string.no_meetups));
+            setEmptyMessage(getString(R.string.no_meetups));
         }
     }
 
@@ -123,10 +124,6 @@ public class MeetupsListFragment extends Fragment implements OnDataLoadListener<
     public void onFailure(Throwable throwable) {
         setLoading(false);
         showError(throwable);
-    }
-
-    public interface UpdateListener {
-        void update();
     }
 
     public String getErrorText(Throwable throwable) {
