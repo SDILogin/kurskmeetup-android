@@ -1,6 +1,5 @@
 package mobi.mpk.kurskmeetup.presentation.fragments;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -32,7 +31,7 @@ public class MeetupsTabFragment extends Fragment implements OnDataLoadListener<L
         listFragment = MeetupsListFragment.newInstance();
         messageFragment = MessageFragment.newInstance();
         service = ApiMeetupsService.getInstance();
-        service.registerObserver(this);
+        service.registerObserver(listFragment);
         showLoading();
         service.getMeetups();
         return fragment;
@@ -40,7 +39,7 @@ public class MeetupsTabFragment extends Fragment implements OnDataLoadListener<L
 
     @Override
     public void onDestroyView() {
-        service.unregisterObserver(this);
+        service.unregisterObserver(listFragment);
         super.onDestroyView();
     }
 
@@ -80,21 +79,20 @@ public class MeetupsTabFragment extends Fragment implements OnDataLoadListener<L
 
     @Override
     public void onFailure(Throwable throwable) {
-        Context context = getContext();
         if (throwable instanceof BadResponse) {
             showError(
-                    context.getString(R.string.error_title),
-                    context.getString(R.string.error_bad_response)
+                    getString(R.string.error_title),
+                    getString(R.string.error_bad_response)
             );
         } else if (throwable instanceof UnknownHostException) {
             showError(
-                    context.getString(R.string.error_title),
-                    context.getString(R.string.error_connection)
+                    getString(R.string.error_title),
+                    getString(R.string.error_connection)
             );
         } else {
             showError(
-                    context.getString(R.string.error_title),
-                    context.getString(R.string.error_internal)
+                    getString(R.string.error_title),
+                    getString(R.string.error_internal)
             );
         }
     }

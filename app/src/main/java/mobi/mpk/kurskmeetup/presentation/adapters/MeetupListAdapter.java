@@ -22,7 +22,7 @@ public class MeetupListAdapter extends BaseAdapter {
     private static final DateFormat dateFormat;
     private LayoutInflater inflater;
     private Context context;
-    private List<Meetup> meetupList;
+    private List<Meetup> meetups;
 
     static {
         dateFormat = new SimpleDateFormat("HH:mm dd MMMM yyyy", Locale.getDefault());
@@ -31,17 +31,17 @@ public class MeetupListAdapter extends BaseAdapter {
     public MeetupListAdapter(Context context) {
         this.context = context;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        meetupList = new LinkedList<>();
+        meetups = new LinkedList<>();
     }
 
     @Override
     public int getCount() {
-        return meetupList.size();
+        return meetups.size();
     }
 
     @Override
     public Meetup getItem(int position) {
-        return meetupList.get(position);
+        return meetups.get(position);
     }
 
     @Override
@@ -71,17 +71,21 @@ public class MeetupListAdapter extends BaseAdapter {
     }
 
     public void add(Meetup meetup) {
-        meetupList.add(meetup);
+        meetups.add(meetup);
         notifyDataSetChanged();
     }
 
     public void addAll(Collection<? extends Meetup> collection) {
-        meetupList.addAll(collection);
+        meetups.addAll(collection);
         notifyDataSetChanged();
     }
 
+    public int size() {
+        return meetups.size();
+    }
+
     public void clear() {
-        meetupList.clear();
+        meetups.clear();
     }
 
 }

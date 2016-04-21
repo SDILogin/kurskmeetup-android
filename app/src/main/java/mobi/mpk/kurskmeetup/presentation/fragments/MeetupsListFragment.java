@@ -8,30 +8,38 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import java.net.UnknownHostException;
 import java.util.List;
 
 import mobi.mpk.kurskmeetup.R;
 import mobi.mpk.kurskmeetup.application.ApiMeetupsService;
+import mobi.mpk.kurskmeetup.data.BadResponse;
 import mobi.mpk.kurskmeetup.data.OnDataLoadListener;
 import mobi.mpk.kurskmeetup.domain.dto.Meetup;
 import mobi.mpk.kurskmeetup.presentation.adapters.MeetupListAdapter;
 
 public class MeetupsListFragment extends Fragment implements OnDataLoadListener<List<Meetup>> {
-    private ListView meetupsList;
     private MeetupListAdapter listAdapter;
+
+    private ListView meetupsList;
     private SwipeRefreshLayout refreshLayout;
+    private TextView msgText;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View fragmentView = inflater.inflate(R.layout.fragment_meetups_list, container, false);
         meetupsList = (ListView) fragmentView.findViewById(R.id.meetups_list);
+        refreshLayout = (SwipeRefreshLayout) fragmentView.findViewById(R.id.refresh_meetups);
+        msgText = (TextView) fragmentView.findViewById(R.id.meetups_msgtxt);
+
         listAdapter = new MeetupListAdapter(getContext());
         meetupsList.setAdapter(listAdapter);
         ApiMeetupsService.getInstance().registerObserver(this);
 
-        refreshLayout = (SwipeRefreshLayout) fragmentView.findViewById(R.id.refresh_meetups);
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -65,6 +73,25 @@ public class MeetupsListFragment extends Fragment implements OnDataLoadListener<
         }
     }
 
+    public void showMsg(String msg) {
+        msgText.setText(msg);
+        meetupsList.setVisibility(View.GONE);
+        msgText.setVisibility(View.VISIBLE);
+    }
+
+    public void showError(Throwable throwable) {
+        if (listAdapter.size() > 0) {
+            Toast.makeText(getContext(), getErrorText(throwable), Toast.LENGTH_SHORT).show();
+        } else {
+            showMsg(getErrorText(throwable));
+        }
+    }
+
+    public void showList() {
+        msgText.setVisibility(View.GONE);
+        meetupsList.setVisibility(View.VISIBLE);
+    }
+
     public static MeetupsListFragment newInstance() {
         return new MeetupsListFragment();
     }
@@ -72,17 +99,33 @@ public class MeetupsListFragment extends Fragment implements OnDataLoadListener<
     @Override
     public void onSuccess(List<Meetup> data) {
         setLoading(false);
-        listAdapter.clear();
-        listAdapter.addAll(data);
+        if (data.size() > 0) {
+            showList();
+            listAdapter.clear();
+            listAdapter.addAll(data);
+        } else {
+            showMsg(getString(R.string.no_meetups));
+        }
     }
 
     @Override
     public void onFailure(Throwable throwable) {
         setLoading(false);
+        showError(throwable);
     }
 
     public interface UpdateListener {
         void update();
+    }
+
+    public String getErrorText(Throwable throwable) {
+        if (throwable instanceof BadResponse) {
+            return (getString(R.string.error_bad_response));
+        } else if (throwable instanceof UnknownHostException) {
+            return (getString(R.string.error_connection));
+        } else {
+            return (getString(R.string.error_internal));
+        }
     }
 
 }
