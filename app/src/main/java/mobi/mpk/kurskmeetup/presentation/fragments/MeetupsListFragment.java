@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,7 +45,7 @@ public class MeetupsListFragment extends Fragment implements OnDataLoadListener<
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                ((UpdateListener) getParentFragment()).update();
+                service.getMeetups();
             }
         });
         refreshLayout.setColorSchemeResources(
@@ -58,6 +57,7 @@ public class MeetupsListFragment extends Fragment implements OnDataLoadListener<
         service = ApiMeetupsService.getInstance();
         service.registerObserver(this);
         setLoading(true);
+        service.getMeetups();
         return fragmentView;
     }
 
@@ -75,13 +75,17 @@ public class MeetupsListFragment extends Fragment implements OnDataLoadListener<
                 }
             });
         } else {
-            refreshLayout.setRefreshing(false);
+            refreshLayout.post(new Runnable() {
+                @Override
+                public void run() {
+                    refreshLayout.setRefreshing(false);
+                }
+            });
         }
     }
 
     public void showMsg(String msg) {
         msgText.setText(msg);
-        Log.d(this.getClass().getSimpleName(), "" + refreshLayout.isRefreshing());
         meetupsList.setVisibility(View.INVISIBLE);
         msgText.setVisibility(View.VISIBLE);
     }
