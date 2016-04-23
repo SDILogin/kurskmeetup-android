@@ -11,9 +11,11 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.inject.Inject;
+
+import mobi.mpk.kurskmeetup.Injector;
 import mobi.mpk.kurskmeetup.R;
 import mobi.mpk.kurskmeetup.application.presenter.MeetupsPresenter;
-import mobi.mpk.kurskmeetup.application.presenter.MeetupsPresenterFactory;
 import mobi.mpk.kurskmeetup.application.presenter.dto.MeetupDto;
 import mobi.mpk.kurskmeetup.domain.dto.Meetup;
 
@@ -21,13 +23,14 @@ public class MeetupListAdapter extends BaseAdapter {
     private LayoutInflater inflater;
     private Context context;
     private List<Meetup> meetupList;
-    private MeetupsPresenter presenter;
+    @Inject
+    MeetupsPresenter presenter;
 
     public MeetupListAdapter(Context context) {
+        Injector.INSTANCE.getComponent().inject(this);
         this.context = context;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         meetupList = new LinkedList<>();
-        presenter = new MeetupsPresenterFactory().create();
     }
 
     @Override

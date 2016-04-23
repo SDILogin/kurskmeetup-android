@@ -3,10 +3,10 @@ package mobi.mpk.kurskmeetup.application;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import mobi.mpk.kurskmeetup.data.AsyncRepository;
 import mobi.mpk.kurskmeetup.data.OnDataLoadListener;
-import mobi.mpk.kurskmeetup.data.Urls;
-import mobi.mpk.kurskmeetup.data.retrofit.UrlRepository;
 import mobi.mpk.kurskmeetup.domain.MeetupsService;
 import mobi.mpk.kurskmeetup.domain.dto.Meetup;
 
@@ -34,10 +34,6 @@ public class ApiMeetupsService implements MeetupsService {
     @Override
     public void unregisterObserver(OnDataLoadListener<List<Meetup>> observer) {
         observers.remove(observer);
-    }
-
-    public void setRepository(AsyncRepository repository) {
-        this.repository = repository;
     }
 
     private class UpdatingCallback implements OnDataLoadListener<List<Meetup>> {

@@ -12,23 +12,25 @@ import android.view.ViewGroup;
 import java.net.UnknownHostException;
 import java.util.List;
 
+import javax.inject.Inject;
+
+import mobi.mpk.kurskmeetup.Injector;
 import mobi.mpk.kurskmeetup.R;
-import mobi.mpk.kurskmeetup.application.ApiMeetupsService;
-import mobi.mpk.kurskmeetup.application.MeetupServiceFactory;
 import mobi.mpk.kurskmeetup.data.BadResponse;
 import mobi.mpk.kurskmeetup.data.OnDataLoadListener;
 import mobi.mpk.kurskmeetup.domain.MeetupsService;
 import mobi.mpk.kurskmeetup.domain.dto.Meetup;
 
 public class MeetupsTabFragment extends Fragment implements OnDataLoadListener<List<Meetup>> {
-    private MeetupsService service;
+    @Inject
+    MeetupsService service;
     private List<Meetup> meetups;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        Injector.INSTANCE.getComponent().inject(this);
         View fragment = inflater.inflate(R.layout.fragment_meetups_tab, container, false);
-        service = new MeetupServiceFactory().create();
         service.registerObserver(this);
         showLoading();
         service.getMeetups();
