@@ -22,7 +22,7 @@ import mobi.mpk.kurskmeetup.domain.dto.Meetup;
 public class MeetupListAdapter extends BaseAdapter {
     private LayoutInflater inflater;
     private Context context;
-    private List<Meetup> meetupList;
+    private List<Meetup> meetups;
     @Inject
     MeetupsPresenter presenter;
 
@@ -30,17 +30,17 @@ public class MeetupListAdapter extends BaseAdapter {
         Injector.INSTANCE.getComponent().inject(this);
         this.context = context;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        meetupList = new LinkedList<>();
+        meetups = new LinkedList<>();
     }
 
     @Override
     public int getCount() {
-        return meetupList.size();
+        return meetups.size();
     }
 
     @Override
     public Meetup getItem(int position) {
-        return meetupList.get(position);
+        return meetups.get(position);
     }
 
     @Override
@@ -67,13 +67,21 @@ public class MeetupListAdapter extends BaseAdapter {
     }
 
     public void add(Meetup meetup) {
-        meetupList.add(meetup);
+        meetups.add(meetup);
         notifyDataSetChanged();
     }
 
     public void addAll(Collection<? extends Meetup> collection) {
-        meetupList.addAll(collection);
+        meetups.addAll(collection);
         notifyDataSetChanged();
+    }
+
+    public int size() {
+        return meetups.size();
+    }
+
+    public void clear() {
+        meetups.clear();
     }
 
 }
