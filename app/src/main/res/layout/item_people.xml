@@ -25,6 +25,8 @@
             android:layout_height="wrap_content"
             android:textSize="16sp"
             android:padding="16dp"
+            android:lines="1"
+            android:ellipsize="end"
             android:textColor="@android:color/white"
             android:background="#7F000000"
             android:layout_alignParentBottom="true"

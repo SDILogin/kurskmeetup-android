@@ -1,10 +1,9 @@
 package mobi.mpk.kurskmeetup.domain.dto;
 
-import android.media.Image;
-
 public class People {
     private String name;
-    private Image image;
+    private String vk;
+    private String github;
 
     public String getName() {
         return name;
@@ -14,11 +13,19 @@ public class People {
         this.name = name;
     }
 
-    public Image getImage() {
-        return image;
+    public String getVk() {
+        return vk;
     }
 
-    public void setImage(Image image) {
-        this.image = image;
+    public void setVk(String vk) {
+        this.vk = vk;
+    }
+
+    public String getGithub() {
+        return github;
+    }
+
+    public void setGithub(String github) {
+        this.github = github;
     }
 }

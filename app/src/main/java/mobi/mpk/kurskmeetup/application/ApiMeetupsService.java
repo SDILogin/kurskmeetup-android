@@ -13,19 +13,9 @@ import mobi.mpk.kurskmeetup.domain.dto.People;
 public class ApiMeetupsService implements MeetupsService, PeopleService {
     private AsyncRepository repository;
     private List<Meetup> meetups;
-    private static List<People> people;
+    private List<People> people;
     private List<OnDataLoadListener<List<Meetup>>> meetupsObservers;
     private List<OnDataLoadListener<List<People>>> peopleObservers;
-
-    // TODO replace by real implementation
-    static {
-        people = new LinkedList<>();
-        for (int i = 0; i < 10; i++) {
-            People people1 = new People();
-            people1.setName("Full Name " + i);
-            people.add(people1);
-        }
-    }
 
     public ApiMeetupsService(AsyncRepository repository) {
         this.repository = repository;
@@ -41,8 +31,7 @@ public class ApiMeetupsService implements MeetupsService, PeopleService {
 
     @Override
     public List<People> getPeople() {
-        // TODO async downloading
-        new UpdatingPeopleCallback().onSuccess(people);
+        repository.getPeople(new UpdatingPeopleCallback());
         return people;
     }
 

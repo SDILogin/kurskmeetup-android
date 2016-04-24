@@ -51,12 +51,8 @@ public class PeopleListAdapter extends BaseAdapter {
         if (people1 != null) {
             ImageView imageView = (ImageView) convertView.findViewById(R.id.people_img);
             TextView textView = (TextView) convertView.findViewById(R.id.people_name);
-            Image image = people1.getImage();
-            if (image != null) {
-                // TODO set custom img
-            } else {
-                imageView.setImageResource(R.drawable.person_placeholder);
-            }
+            // TODO set custom img
+            imageView.setImageResource(R.drawable.person_placeholder);
             textView.setText(people1.getName());
         }
         return convertView;
