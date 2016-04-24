@@ -9,4 +9,5 @@
     <string name="error_connection">Ошибка при подключении к серверу</string>
     <string name="error_internal">Внутренняя ошибка приложения</string>
     <string name="error_title">Ошибка:</string>
+    <string name="people_img_description">Avatar</string>
 </resources>
