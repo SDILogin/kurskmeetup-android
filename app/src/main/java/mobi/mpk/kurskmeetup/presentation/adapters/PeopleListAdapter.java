@@ -50,7 +50,7 @@ public class PeopleListAdapter extends BaseAdapter {
         People people1 = getItem(position);
         if (people1 != null) {
             ImageView imageView = (ImageView) convertView.findViewById(R.id.people_img);
-            TextView textView = (TextView) convertView.findViewById(R.id.people_text);
+            TextView textView = (TextView) convertView.findViewById(R.id.people_name);
             Image image = people1.getImage();
             if (image != null) {
                 // TODO set custom img
@@ -64,10 +64,12 @@ public class PeopleListAdapter extends BaseAdapter {
 
     public void add(People people) {
         this.people.add(people);
+        notifyDataSetChanged();
     }
 
     public void addAll(Collection<? extends People> collection) {
         people.addAll(collection);
+        notifyDataSetChanged();
     }
 
     public int size() {

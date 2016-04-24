@@ -1,17 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
 
-    <GridView
-        android:id="@+id/peoples_grid"
+    <mobi.mpk.kurskmeetup.presentation.views.EmptyViewSwipeRefreshLayout
+        android:id="@+id/refresh_people"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:numColumns="2"
-        android:horizontalSpacing="4dp"
-        android:verticalSpacing="4dp"
-        android:padding="4dp">
+        android:layout_height="wrap_content" >
 
-    </GridView>
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
 
-</LinearLayout>
+            <GridView
+                android:id="@+id/peoples_grid"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:numColumns="2"
+                android:horizontalSpacing="4dp"
+                android:verticalSpacing="4dp"
+                android:padding="4dp" />
+
+            <ScrollView
+                android:id="@+id/people_scrollwrap"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
+
+                <TextView
+                    android:id="@+id/people_msgtxt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0dp"
+                    android:gravity="center"
+                    android:layout_gravity="center_vertical"
+                    android:textColor="#57000000"
+                    android:textSize="24sp"
+                    android:textStyle="italic"
+                    android:visibility="visible" />
+
+            </ScrollView>
+
+        </FrameLayout>
+
+    </mobi.mpk.kurskmeetup.presentation.views.EmptyViewSwipeRefreshLayout>
+
+</RelativeLayout>
