@@ -19,7 +19,6 @@ import javax.inject.Inject;
 
 import mobi.mpk.kurskmeetup.Injector;
 import mobi.mpk.kurskmeetup.R;
-import mobi.mpk.kurskmeetup.application.ApiMeetupsService;
 import mobi.mpk.kurskmeetup.data.BadResponse;
 import mobi.mpk.kurskmeetup.data.OnDataLoadListener;
 import mobi.mpk.kurskmeetup.domain.MeetupsService;
@@ -63,7 +62,7 @@ public class MeetupsListFragment extends Fragment implements OnDataLoadListener<
         );
 
         meetupsList.setEmptyView(scrollView);
-        service.registerObserver(this);
+        service.registerMeetupsObserver(this);
         setLoading(true);
         updateMeetups();
         return fragmentView;
@@ -71,7 +70,7 @@ public class MeetupsListFragment extends Fragment implements OnDataLoadListener<
 
     @Override
     public void onDetach() {
-        service.unregisterObserver(this);
+        service.unregisterMeetupsObserver(this);
         super.onDetach();
     }
 

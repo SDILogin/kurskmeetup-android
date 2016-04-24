@@ -9,8 +9,7 @@ import mobi.mpk.kurskmeetup.domain.dto.People;
 public interface MeetupsService {
 
     List<Meetup> getMeetups();
-    List<People> getPeople();
-    void registerObserver(OnDataLoadListener<List<Meetup>> observer);
-    void unregisterObserver(OnDataLoadListener<List<Meetup>> observer);
+    void registerMeetupsObserver(OnDataLoadListener<List<Meetup>> observer);
+    void unregisterMeetupsObserver(OnDataLoadListener<List<Meetup>> observer);
 
 }

@@ -49,7 +49,7 @@ public class ApiMeetupsServiceTest {
             }
         };
 
-        service.registerObserver(listener);
+        service.registerMeetupsObserver(listener);
 
         Field observersList = service.getClass().getDeclaredField("observers");
         observersList.setAccessible(true);
@@ -72,8 +72,8 @@ public class ApiMeetupsServiceTest {
             }
         };
 
-        service.registerObserver(listener);
-        service.unregisterObserver(listener);
+        service.registerMeetupsObserver(listener);
+        service.unregisterMeetupsObserver(listener);
 
         Field observersList = service.getClass().getDeclaredField("observers");
         observersList.setAccessible(true);
