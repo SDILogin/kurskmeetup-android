@@ -6,7 +6,7 @@ import dagger.Module;
 import dagger.Provides;
 import mobi.mpk.kurskmeetup.application.ApiMeetupsService;
 import mobi.mpk.kurskmeetup.application.presenter.MeetupsPresenter;
-import mobi.mpk.kurskmeetup.application.presenter.MyMeetupsPresenter;
+import mobi.mpk.kurskmeetup.application.presenter.MeetupsListPresenter;
 import mobi.mpk.kurskmeetup.data.AsyncRepository;
 import mobi.mpk.kurskmeetup.data.Urls;
 import mobi.mpk.kurskmeetup.data.retrofit.UrlRepository;
@@ -29,8 +29,8 @@ public class AppModule {
 
     @Provides
     @Singleton
-    public static MeetupsPresenter provideMeetupsPresenter() {
-        return new MyMeetupsPresenter();
+    public static MeetupsPresenter provideMeetupsPresenter(MeetupsService service) {
+        return new MeetupsListPresenter(service);
     }
 
 }

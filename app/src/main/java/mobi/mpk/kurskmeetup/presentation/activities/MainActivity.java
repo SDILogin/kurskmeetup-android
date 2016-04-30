@@ -8,6 +8,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import com.crashlytics.android.Crashlytics;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import io.fabric.sdk.android.Fabric;
 
 import mobi.mpk.kurskmeetup.R;
@@ -15,20 +18,14 @@ import mobi.mpk.kurskmeetup.presentation.adapters.TabsPagerAdapter;
 
 public class MainActivity extends AppCompatActivity {
 
-    /**
-     * The {@link android.support.v4.view.PagerAdapter} that will provide
-     * fragments for each of the sections. We use a
-     * {@link FragmentPagerAdapter} derivative, which will keep every
-     * loaded fragment in memory. If this becomes too memory intensive, it
-     * may be best to switch to a
-     * {@link android.support.v4.app.FragmentStatePagerAdapter}.
-     */
-    private TabsPagerAdapter tabsPagerAdapter;
+    @BindView(R.id.container)
+    ViewPager viewPager;
 
-    /**
-     * The {@link ViewPager} that will host the section contents.
-     */
-    private ViewPager viewPager;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+
+    @BindView(R.id.tabs)
+    TabLayout tabLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,20 +33,22 @@ public class MainActivity extends AppCompatActivity {
         Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_main);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        ButterKnife.bind(this);
+
         setSupportActionBar(toolbar);
-        // Create the adapter that will return a fragment for each of the three
-        // primary sections of the activity.
-        tabsPagerAdapter = new TabsPagerAdapter(getSupportFragmentManager());
 
-        // Set up the ViewPager with the sections adapter.
-        viewPager = (ViewPager) findViewById(R.id.container);
-        viewPager.setAdapter(tabsPagerAdapter);
+        viewPager.setAdapter(new TabsPagerAdapter(getSupportFragmentManager()));
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
-        tabLayout.getTabAt(0).setIcon(R.drawable.ic_event_white_36dp).setText("");
-        tabLayout.getTabAt(1).setIcon(R.drawable.ic_group_white_36dp).setText("");
+        setIconToTabAtPosition(0, R.drawable.ic_event_white_36dp);
+        setIconToTabAtPosition(1, R.drawable.ic_group_white_36dp);
     }
 
+    private void setIconToTabAtPosition(int position, int iconResId) {
+        TabLayout.Tab tab = tabLayout.getTabAt(position);
+        if (tab != null) {
+            tab.setIcon(iconResId);
+            tab.setText("");
+        }
+    }
 }

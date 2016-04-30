@@ -7,30 +7,22 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedList;
 import java.util.List;
 
-import javax.inject.Inject;
-
-import mobi.mpk.kurskmeetup.Injector;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import mobi.mpk.kurskmeetup.R;
-import mobi.mpk.kurskmeetup.application.presenter.MeetupsPresenter;
 import mobi.mpk.kurskmeetup.application.presenter.dto.MeetupDto;
 import mobi.mpk.kurskmeetup.domain.dto.Meetup;
 
 public class MeetupListAdapter extends BaseAdapter {
     private LayoutInflater inflater;
-    private Context context;
-    private List<Meetup> meetups;
-    @Inject
-    MeetupsPresenter presenter;
+    private List<Meetup> meetups = new ArrayList<>();
 
     public MeetupListAdapter(Context context) {
-        Injector.INSTANCE.getComponent().inject(this);
-        this.context = context;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        meetups = new LinkedList<>();
     }
 
     @Override
@@ -52,17 +44,18 @@ public class MeetupListAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.item_meetup, null);
+            convertView.setTag(new ViewHolder(convertView));
         }
+
         Meetup meetup = getItem(position);
         if (meetup != null) {
-            TextView titleView = (TextView) convertView.findViewById(R.id.meetup_title);
-            TextView subView = (TextView) convertView.findViewById(R.id.meetup_subtext);
-            TextView dateView = (TextView) convertView.findViewById(R.id.meetup_date);
-            MeetupDto meetupDto = presenter.getDto(meetup);
-            titleView.setText(meetupDto.getPlace());
-            subView.setText(meetupDto.getTopics());
-            dateView.setText(meetupDto.getDatetime());
+            ViewHolder viewHolder = (ViewHolder) convertView.getTag();
+            MeetupDto meetupDto = MeetupDto.from(meetup);
+            viewHolder.title.setText(meetupDto.getPlace());
+            viewHolder.subText.setText(meetupDto.getTopics());
+            viewHolder.date.setText(meetupDto.getDatetime());
         }
+
         return convertView;
     }
 
@@ -84,4 +77,18 @@ public class MeetupListAdapter extends BaseAdapter {
         meetups.clear();
     }
 
+    static class ViewHolder {
+        @BindView(R.id.meetup_title)
+        TextView title;
+
+        @BindView(R.id.meetup_subtext)
+        TextView subText;
+
+        @BindView(R.id.meetup_date)
+        TextView date;
+
+        public ViewHolder(View v) {
+            ButterKnife.bind(this, v);
+        }
+    }
 }
