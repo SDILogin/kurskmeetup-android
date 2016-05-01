@@ -1,17 +1,26 @@
 package mobi.mpk.kurskmeetup;
 
-import mobi.mpk.kurskmeetup.di.AppComponent;
+import android.content.Context;
+
+import mobi.mpk.kurskmeetup.data.Urls;
+import mobi.mpk.kurskmeetup.di.ApplicationModule;
 import mobi.mpk.kurskmeetup.di.DaggerAppComponent;
+import mobi.mpk.kurskmeetup.di.MeetupsComponent;
+import mobi.mpk.kurskmeetup.di.network.NetworkModule;
 
 public enum Injector {
     INSTANCE;
-    private AppComponent component;
+    private MeetupsComponent meetupsComponent;
 
-    public AppComponent getComponent() {
-        return component;
+    public MeetupsComponent getMeetupsComponent() {
+        return meetupsComponent;
     }
 
-    void setup() {
-        component = DaggerAppComponent.create();
+    void setup(Context context) {
+        meetupsComponent = DaggerAppComponent.builder()
+                .applicationModule(new ApplicationModule(context))
+                .networkModule(new NetworkModule(Urls.APIARY))
+                .build()
+                .plus();
     }
 }

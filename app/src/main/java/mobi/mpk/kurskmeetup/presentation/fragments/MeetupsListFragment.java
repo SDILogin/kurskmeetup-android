@@ -67,7 +67,7 @@ public class MeetupsListFragment extends Fragment implements MeetupsView, Adapte
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        Injector.INSTANCE.getComponent().inject(this);
+        Injector.INSTANCE.getMeetupsComponent().inject(this);
 
         View fragmentView = inflater.inflate(R.layout.fragment_meetups_list, container, false);
 

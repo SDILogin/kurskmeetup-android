@@ -2,6 +2,8 @@ package mobi.mpk.kurskmeetup.data.retrofit;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import mobi.mpk.kurskmeetup.data.AsyncRepository;
 import mobi.mpk.kurskmeetup.data.BadResponse;
 import mobi.mpk.kurskmeetup.data.OnDataLoadListener;
@@ -14,8 +16,9 @@ public class UrlRepository implements AsyncRepository {
 
     private KurskMeetupApi api;
 
-    public UrlRepository(String url) {
-        api = new ApiBuilder(url).build();
+    @Inject
+    public UrlRepository(KurskMeetupApi api) {
+        this.api = api;
     }
 
     @Override

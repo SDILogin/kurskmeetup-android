@@ -15,6 +15,7 @@ public class ApiMeetupsService implements MeetupsService {
     private List<Meetup> meetups;
     private List<OnDataLoadListener<List<Meetup>>> observers;
 
+    @Inject
     public ApiMeetupsService(AsyncRepository repository) {
         this.repository = repository;
         observers = new LinkedList<>();
