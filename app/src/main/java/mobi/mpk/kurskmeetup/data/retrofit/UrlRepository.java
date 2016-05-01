@@ -1,6 +1,7 @@
 package mobi.mpk.kurskmeetup.data.retrofit;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
@@ -11,6 +12,9 @@ import mobi.mpk.kurskmeetup.domain.dto.Meetup;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 public class UrlRepository implements AsyncRepository {
 
@@ -22,30 +26,14 @@ public class UrlRepository implements AsyncRepository {
     }
 
     @Override
-    public void getMeetups(final OnDataLoadListener<List<Meetup>> callback) {
-        Call<List<Meetup>> call = api.listMeetups();
-        call.enqueue(new Callback<List<Meetup>>() {
-            @Override
-            public void onResponse(Call<List<Meetup>> call, Response<List<Meetup>> response) {
-                if (response.isSuccessful()) {
-                    callback.onSuccess(response.body());
-                } else {
-                    callback.onFailure(new BadResponse("Response HTTP code: " +
-                                       response.code() +
-                                       response.message()));
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<Meetup>> call, Throwable t) {
-                callback.onFailure(t);
-            }
-        });
+    public Observable<List<Meetup>> getMeetups() {
+        return api.listMeetups()
+                .subscribeOn(Schedulers.io());
     }
 
     @Override
-    public void getMeetup(int id, OnDataLoadListener<Meetup> callback) {
-
+    public Observable<Meetup> getMeetup(int id) {
+        return Observable.just(new Meetup());
     }
 
 }

@@ -7,11 +7,11 @@ import javax.inject.Inject;
 
 import mobi.mpk.kurskmeetup.application.presenter.dto.MeetupDto;
 import mobi.mpk.kurskmeetup.application.view.MeetupsView;
-import mobi.mpk.kurskmeetup.data.OnDataLoadListener;
 import mobi.mpk.kurskmeetup.domain.MeetupsService;
 import mobi.mpk.kurskmeetup.domain.dto.Meetup;
+import rx.android.schedulers.AndroidSchedulers;
 
-public class MeetupsListPresenter implements MeetupsPresenter, OnDataLoadListener<List<Meetup>> {
+public class MeetupsListPresenter implements MeetupsPresenter {
 
     private final MeetupsView emptyMeetupsView = new EmptyMeetupView();
 
@@ -31,7 +31,24 @@ public class MeetupsListPresenter implements MeetupsPresenter, OnDataLoadListene
     @Override
     public void onListPulled() {
         getView().showProgressBar();
-        this.interactor.getMeetups();
+        this.interactor.getMeetups()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        listOfMeetups -> {
+                            getView().hideProgressBar();
+
+                            if (listOfMeetups == null || listOfMeetups.isEmpty()) {
+                                getView().showMessage("Empty");
+                            } else {
+                                getView().showMeetups(listOfMeetups);
+                            }
+                        },
+
+                        error -> {
+                            getView().hideProgressBar();
+                            getView().onError(error);
+                        }
+                );
     }
 
     @Override
@@ -48,32 +65,29 @@ public class MeetupsListPresenter implements MeetupsPresenter, OnDataLoadListene
         this.view = new WeakReference<>(meetupsView);
 
         getView().showProgressBar();
-        this.interactor.registerObserver(this);
-        this.interactor.getMeetups();
+        this.interactor.getMeetups()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        listOfMeetups -> {
+                            getView().hideProgressBar();
+
+                            if (listOfMeetups == null || listOfMeetups.isEmpty()) {
+                                getView().showMessage("Empty");
+                            } else {
+                                getView().showMeetups(listOfMeetups);
+                            }
+                        },
+
+                        error -> {
+                            getView().hideProgressBar();
+                            getView().onError(error);
+                        }
+                );
     }
 
     @Override
     public void onViewDetached(MeetupsView meetupsView) {
         this.view.clear();
-
-        this.interactor.unregisterObserver(this);
-    }
-
-    @Override
-    public void onSuccess(List<Meetup> data) {
-        getView().hideProgressBar();
-
-        if (data == null || data.isEmpty()) {
-            getView().showMessage("Empty");
-        } else {
-            getView().showMeetups(data);
-        }
-    }
-
-    @Override
-    public void onFailure(Throwable throwable) {
-        getView().hideProgressBar();
-        getView().onError(throwable);
     }
 
     /**

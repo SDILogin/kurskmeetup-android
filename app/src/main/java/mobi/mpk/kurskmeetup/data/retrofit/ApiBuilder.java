@@ -1,6 +1,7 @@
 package mobi.mpk.kurskmeetup.data.retrofit;
 
 import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 
 public class ApiBuilder {
@@ -14,6 +15,7 @@ public class ApiBuilder {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(url)
                 .addConverterFactory(JacksonConverterFactory.create())
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .build();
         return retrofit.create(KurskMeetupApi.class);
     }

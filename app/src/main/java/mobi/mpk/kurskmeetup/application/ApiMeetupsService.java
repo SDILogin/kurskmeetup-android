@@ -1,66 +1,39 @@
 package mobi.mpk.kurskmeetup.application;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
 import mobi.mpk.kurskmeetup.data.AsyncRepository;
-import mobi.mpk.kurskmeetup.data.OnDataLoadListener;
 import mobi.mpk.kurskmeetup.domain.MeetupsService;
 import mobi.mpk.kurskmeetup.domain.dto.Meetup;
+import rx.Observable;
 
 public class ApiMeetupsService implements MeetupsService {
     private AsyncRepository repository;
-    private List<Meetup> meetups;
-    private List<OnDataLoadListener<List<Meetup>>> observers;
+    private List<Meetup> meetups = new ArrayList<>();
 
     @Inject
     public ApiMeetupsService(AsyncRepository repository) {
         this.repository = repository;
-        observers = new LinkedList<>();
     }
 
     @Override
-    public List<Meetup> getMeetups() {
-        repository.getMeetups(new UpdatingCallback());
-        return meetups;
+    public Observable<List<Meetup>> getMeetups() {
+        return Observable.merge(
+                getCachedData(),
+                repository.getMeetups().doOnNext(this::save)
+        );
     }
 
-    @Override
-    public void registerObserver(OnDataLoadListener<List<Meetup>> observer) {
-        observers.add(observer);
+    private Observable<List<Meetup>> getCachedData() {
+        return Observable.just(meetups);
     }
 
-    @Override
-    public void unregisterObserver(OnDataLoadListener<List<Meetup>> observer) {
-        observers.remove(observer);
-    }
-
-    private class UpdatingCallback implements OnDataLoadListener<List<Meetup>> {
-
-        @Override
-        public void onSuccess(List<Meetup> data) {
+    private void save(List<Meetup> data) {
+        if (data != null) {
             meetups = data;
-            notifySuccessObservers(data);
-        }
-
-        @Override
-        public void onFailure(Throwable throwable) {
-            notifyFailureObservers(throwable);
         }
     }
-
-    private void notifySuccessObservers(List<Meetup> data) {
-        for (OnDataLoadListener<List<Meetup>> observer : observers) {
-            observer.onSuccess(data);
-        }
-    }
-
-    private void notifyFailureObservers(Throwable throwable) {
-        for (OnDataLoadListener<List<Meetup>> observer : observers) {
-            observer.onFailure(throwable);
-        }
-    }
-
 }
