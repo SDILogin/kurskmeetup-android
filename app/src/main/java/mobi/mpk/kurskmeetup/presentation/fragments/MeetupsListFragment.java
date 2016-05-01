@@ -76,12 +76,7 @@ public class MeetupsListFragment extends Fragment implements MeetupsView, Adapte
         listAdapter = new MeetupListAdapter(getContext());
         meetupsList.setAdapter(listAdapter);
 
-        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                presenter.onListPulled();
-            }
-        });
+        refreshLayout.setOnRefreshListener(() -> presenter.onListPulled());
         refreshLayout.setColorSchemeResources(
                 android.R.color.holo_red_light,
                 android.R.color.holo_orange_light,
@@ -121,20 +116,12 @@ public class MeetupsListFragment extends Fragment implements MeetupsView, Adapte
 
     @Override
     public void showProgressBar() {
-        refreshLayout.post(new Runnable() {
-            @Override public void run() {
-                refreshLayout.setRefreshing(true);
-            }
-        });
+        refreshLayout.post(() -> refreshLayout.setRefreshing(true));
     }
 
     @Override
     public void hideProgressBar() {
-        refreshLayout.post(new Runnable() {
-            @Override public void run() {
-                refreshLayout.setRefreshing(false);
-            }
-        });
+        refreshLayout.post(() -> refreshLayout.setRefreshing(false));
     }
 
     @Override
