@@ -33,15 +33,11 @@ public class MeetupsListPresenter implements MeetupsPresenter {
         getView().showProgressBar();
         this.interactor.getMeetups()
                 .observeOn(AndroidSchedulers.mainThread())
+                .filter(listOfMeetups -> listOfMeetups != null && !listOfMeetups.isEmpty())
                 .subscribe(
                         listOfMeetups -> {
                             getView().hideProgressBar();
-
-                            if (listOfMeetups == null || listOfMeetups.isEmpty()) {
-                                getView().showMessage("Empty");
-                            } else {
-                                getView().showMeetups(listOfMeetups);
-                            }
+                            getView().showMeetups(listOfMeetups);
                         },
 
                         error -> {
@@ -65,17 +61,14 @@ public class MeetupsListPresenter implements MeetupsPresenter {
         this.view = new WeakReference<>(meetupsView);
 
         getView().showProgressBar();
+        getView().showMessage("Loading...");
         this.interactor.getMeetups()
                 .observeOn(AndroidSchedulers.mainThread())
+                .filter(listOfMeetups -> listOfMeetups != null && !listOfMeetups.isEmpty())
                 .subscribe(
                         listOfMeetups -> {
                             getView().hideProgressBar();
-
-                            if (listOfMeetups == null || listOfMeetups.isEmpty()) {
-                                getView().showMessage("Empty");
-                            } else {
-                                getView().showMeetups(listOfMeetups);
-                            }
+                            getView().showMeetups(listOfMeetups);
                         },
 
                         error -> {
