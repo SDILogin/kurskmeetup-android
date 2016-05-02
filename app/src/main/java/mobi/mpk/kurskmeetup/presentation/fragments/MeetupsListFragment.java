@@ -1,10 +1,10 @@
 package mobi.mpk.kurskmeetup.presentation.fragments;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,10 +14,10 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.net.UnknownHostException;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 
 import butterknife.BindString;
 import butterknife.BindView;
@@ -27,7 +27,6 @@ import mobi.mpk.kurskmeetup.R;
 import mobi.mpk.kurskmeetup.application.presenter.MeetupsPresenter;
 import mobi.mpk.kurskmeetup.application.presenter.dto.MeetupDto;
 import mobi.mpk.kurskmeetup.application.view.MeetupsView;
-import mobi.mpk.kurskmeetup.data.BadResponse;
 import mobi.mpk.kurskmeetup.domain.dto.Meetup;
 import mobi.mpk.kurskmeetup.presentation.adapters.MeetupListAdapter;
 import mobi.mpk.kurskmeetup.presentation.views.EmptyViewSwipeRefreshLayout;
@@ -36,6 +35,9 @@ public class MeetupsListFragment extends Fragment implements MeetupsView, Adapte
 
     @Inject
     MeetupsPresenter presenter;
+
+    @Inject
+    Context context;
 
     @BindView(R.id.meetups_list)
     ListView meetupsList;
@@ -48,15 +50,6 @@ public class MeetupsListFragment extends Fragment implements MeetupsView, Adapte
 
     @BindView(R.id.meetups_scrollwrap)
     ScrollView scrollView;
-
-    @BindString(R.string.error_bad_response)
-    String badResponseMessage;
-
-    @BindString(R.string.error_connection)
-    String errorConnectionMessage;
-
-    @BindString(R.string.error_internal)
-    String internalErrorMessage;
 
     private MeetupListAdapter listAdapter;
 
@@ -104,11 +97,6 @@ public class MeetupsListFragment extends Fragment implements MeetupsView, Adapte
     }
 
     @Override
-    public void showMessage(String message) {
-        msgText.setText(message);
-    }
-
-    @Override
     public void showMeetups(List<Meetup> meetups) {
         listAdapter.clear();
         listAdapter.addAll(meetups);
@@ -125,20 +113,33 @@ public class MeetupsListFragment extends Fragment implements MeetupsView, Adapte
     }
 
     @Override
-    public void onError(Throwable throwable) {
-        if (listAdapter.size() > 0) {
-            Toast.makeText(getContext(), getErrorText(throwable), Toast.LENGTH_SHORT).show();
-        } else {
-            showMessage(getErrorText(throwable));
-        }
+    public void showEmptyMessage() {
+        msgText.setText(R.string.no_meetups);
+    }
+
+    @Override
+    public void showBadResponseMessage() {
+        msgText.setText(R.string.error_bad_response);
+    }
+
+    @Override
+    public void showConnectionErrorMessage() {
+        msgText.setText(R.string.error_connection);
+    }
+
+    @Override
+    public void showInternalErrorMessage() {
+        msgText.setText(R.string.error_internal);
+    }
+
+    @Override
+    public void showLoadingMessage() {
+        msgText.setText(R.string.loading_meetups);
     }
 
     @Override
     public void onError(String message) {
-        Activity activity = getActivity();
-        if (activity != null) {
-            Toast.makeText(activity, message, Toast.LENGTH_LONG).show();
-        }
+        Toast.makeText(context, message, Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -152,15 +153,5 @@ public class MeetupsListFragment extends Fragment implements MeetupsView, Adapte
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
-    }
-
-    private String getErrorText(Throwable throwable) {
-        if (throwable instanceof BadResponse) {
-            return badResponseMessage;
-        } else if (throwable instanceof UnknownHostException) {
-            return errorConnectionMessage;
-        } else {
-            return internalErrorMessage;
-        }
     }
 }
